@@ -94,7 +94,8 @@ const cities: Record<string, City> = {
         id: "pksnova",
         name: "PKS Nova",
         description: "Autobusy dalekobieżne",
-        location: [17.992183, 53.134703],
+        location: [23.16319, 53.13488],
+        zoom: 11,
     },
     poznan: {
         id: "poznan",
