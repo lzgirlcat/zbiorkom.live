@@ -15,6 +15,16 @@ export default memo(() => {
         JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false"),
     );
 
+    const [showScheduledTimes, setShowScheduledTimes] = useState<boolean>(
+        JSON.parse(localStorage.getItem("showScheduledTimes") || "true")
+    );
+    const [mergeArrivalDeparture, setMergeArrivalDeparture] = useState<boolean>(
+        JSON.parse(localStorage.getItem("mergeArrivalDeparture") || "true")
+    );
+    const [showSeconds, setShowSeconds] = useState<boolean>(
+        JSON.parse(localStorage.getItem("showSeconds") || "false")
+    );
+
     const settings = [
         {
             key: "moveToLastLocation",
@@ -30,6 +40,21 @@ export default memo(() => {
             key: "useStopCodeAsIcon",
             value: useStopCodeAsIcon,
             setValue: setStopCodeAsIcon,
+        },
+        {
+            key: "showScheduledTimes",
+            value: showScheduledTimes,
+            setValue: setShowScheduledTimes,
+        },
+        {
+            key: "mergeArrivalDeparture",
+            value: mergeArrivalDeparture,
+            setValue: setMergeArrivalDeparture,
+        },
+        {
+            key: "showSeconds",
+            value: showSeconds,
+            setValue: setShowSeconds,
         },
     ] as const;
 
