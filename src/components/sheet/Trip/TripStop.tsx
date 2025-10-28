@@ -83,7 +83,8 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                 />
                 <VehicleStopIcon
                     color={color}
-                    index={index}
+                    first={index===0}
+                    last={(index+1) === trip[ETrip.stops].length}
                     type={trip[ETrip.route][ERoute.type]}
                     percentTraveled={
                         sequence === 0 && index === 1

@@ -44,12 +44,8 @@ export default memo(() => {
                     <MarkerSettings />
                     <BehaviorSettings />
                     <LanguageSettings />
-                    {JSON.parse(localStorage.getItem("jebaćdominika") || "false") &&
-                        <>
-                            <SearchGroupsOrdering />
-                            <SettingsBackup />
-                        </>
-                    }
+                    <SearchGroupsOrdering />
+                    <SettingsBackup />
                     <Box
                         sx={{
                             display: "flex",

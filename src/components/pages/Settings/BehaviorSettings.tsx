@@ -6,7 +6,7 @@ export default memo(() => {
     const { t } = useTranslation("Settings");
 
     const [moveToLastLocation, setMove] = useState<boolean>(
-        JSON.parse(localStorage.getItem("moveToLastLocation") || "false"),
+        JSON.parse(localStorage.getItem("moveToLastLocation") || "true"),
     );
     const [useLocationSorting, setSorting] = useState<boolean>(
         JSON.parse(localStorage.getItem("useLocationSorting") || "false"),

@@ -6,11 +6,9 @@ import { useTranslation } from "react-i18next";
 export default () => {
     const { t } = useTranslation("Settings");
     const { t: t_groups } = useTranslation("Search");
-    console.log(t_groups("stops"))
 
-    const [groups, setGroups] = useState<string[]>(JSON.parse(localStorage.getItem("searchGroupOrdering") || "[]") || ["vehicles", "stops", "stations", "routes", "relations"])
+    const [groups, setGroups] = useState<string[]>(JSON.parse(localStorage.getItem("searchGroupOrdering") || '["vehicles", "stops", "stations", "routes", "relations"]'))
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-
     const handleDragStart = (index: number) => () => setDraggedIndex(index);
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => e.preventDefault();
     const handleDrop = (index: number) => () => {

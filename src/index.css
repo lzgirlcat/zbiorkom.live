@@ -145,6 +145,16 @@ h6 {
     pointer-events: none;
 }
 
+.vehicleStopIconLineLast {
+    position: absolute;
+    top: -30px;
+    left: 16px;
+    width: 16px;
+    height: 90%;
+    pointer-events: none;
+}
+
+
 .vehicleStopIconLine.small {
     position: absolute;
     top: -20px;

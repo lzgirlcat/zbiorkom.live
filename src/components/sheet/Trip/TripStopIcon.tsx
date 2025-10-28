@@ -4,13 +4,14 @@ import Icon from "@/ui/Icon";
 
 type Props = {
     color: [color: string, text: string, background: string];
-    index: number;
+    first: boolean;
+    last: boolean;
     type: VehicleType;
     percentTraveled?: number;
     lineMargin?: number;
 };
 
-export default ({ color: [color, text, background], index, type, percentTraveled, lineMargin }: Props) => {
+export default ({ color: [color, text, background], first, last, type, percentTraveled, lineMargin }: Props) => {
     return (
         <>
             <span
@@ -19,9 +20,9 @@ export default ({ color: [color, text, background], index, type, percentTraveled
                     border: `3px solid ${color}`,
                 }}
             />
-            {index !== 0 && (
+            {(!first) && (
                 <span
-                    className="vehicleStopIconLine"
+                    className={last ? "vehicleStopIconLineLast":"vehicleStopIconLine"}
                     style={{
                         backgroundColor: color,
                         marginLeft: lineMargin,
