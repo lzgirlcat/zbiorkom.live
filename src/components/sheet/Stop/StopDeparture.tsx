@@ -38,15 +38,12 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 vehicle ? "vehicle" : "trip",
                 encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
             ].join("/") + (isStation ? "?pkp" : ""),
-            {
-                state: -2,
-            },
         );
     };
 
     return (
         <ListItemButton
-            onClick={() => {
+            onDoubleClick={() => {
                 if (isStation) return onSuperClick();
 
                 if (vehicle) {
@@ -58,7 +55,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                     setExpanded(!isExpanded);
                 }
             }}
-            onDoubleClick={onSuperClick}
+            onClick={onSuperClick}
             sx={{
                 display: "flex",
                 flexDirection: "column",

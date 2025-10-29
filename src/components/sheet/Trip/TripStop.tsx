@@ -52,18 +52,15 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
 
     return (
         <ListItemButton
-            onClick={() =>
+            onDoubleClick={() =>
                 map?.flyTo({
                     center: stop[ETripStop.location],
                     zoom: map.getZoom() > 15 ? map.getZoom() : 15,
                 })
             }
-             onDoubleClick={() =>
+            onClick={() =>
                 navigate(
                     `/${city}/${trip[ETrip.route][ERoute.type] == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`,
-                    {
-                        state: -2,
-                    }
                 )
             }
             sx={{

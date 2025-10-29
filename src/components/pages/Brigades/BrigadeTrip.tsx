@@ -44,6 +44,7 @@ export default ({ trip, isActive, showRoute }: Props) => {
                 className="vehicleStopIconLine tripLine"
                 style={{
                     backgroundColor: trip[EBrigadeTrip.route][ERoute.color],
+                    left: (JSON.parse(localStorage.getItem("showSeconds") || "false")) ? 76.5 : 58
                 }}
             />
             <span className="tripRow">
@@ -59,7 +60,12 @@ export default ({ trip, isActive, showRoute }: Props) => {
                     {trip[EBrigadeTrip.startStop]}
                 </span>
             </span>
-            <div className="tripInfo">
+            <div
+                className="tripInfo"
+                style={{
+                    marginLeft: (JSON.parse(localStorage.getItem("showSeconds") || "false")) ? 86.5 : 70
+                }}
+            >
                 <span>
                     {[
                         t("travelTime", {

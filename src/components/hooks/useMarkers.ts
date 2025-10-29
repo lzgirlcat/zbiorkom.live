@@ -36,10 +36,11 @@ export default ({ city, moveBadge }: Props) => {
         abortControllerRef.current = newAbortController;
 
         const bounds = map.getBounds()!;
-        const zoom = map.getZoom();
-        const zoomAllowed = zoom >= 14.5;
-
-        if (!zoomAllowed) setStops([]);
+        let zoom = map.getZoom();
+        const zoomAllowed = zoom >= 13.5;
+        if (zoomAllowed) {
+            zoom = 15;
+        } else setStops([]);
 
         fetchMarkers(
             city,

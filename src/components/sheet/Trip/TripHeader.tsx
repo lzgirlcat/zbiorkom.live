@@ -61,7 +61,7 @@ export default () => {
             >
                 <TripMenu />
 
-                <IconButton size="small" onClick={() => goBack()}>
+                <IconButton size="small" onClick={() => goBack({ home: true })}>
                     <Close />
                 </IconButton>
             </Box>

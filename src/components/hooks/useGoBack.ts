@@ -1,6 +1,8 @@
 import { useMap } from "@vis.gl/react-maplibre";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+
+
 export default () => {
     const { key, state } = useLocation();
     const { current: map } = useMap();
@@ -9,8 +11,8 @@ export default () => {
 
     const currentHistory = window.history.length - window.historyLength;
 
-    return ({ ignoreState = false }: { ignoreState?: boolean } = {}) => {
-        if (!key || key === "default" || (Math.abs(state) > currentHistory && !ignoreState)) {
+    return ({ ignoreState = false, home = false }: { ignoreState?: boolean, home?: boolean } = {}) => {
+        if (home || !key || key === "default" || (Math.abs(state) > currentHistory && !ignoreState)) {
             navigate(`/${city}/`);
 
             if (map && map.getZoom() < 15) map.flyTo({ zoom: 15 });

@@ -33,6 +33,7 @@ export default ({ execution }: { execution: Execution }) => {
                 className="vehicleStopIconLine executionLine"
                 style={{
                     backgroundColor: inversePrimary,
+                    left: (JSON.parse(localStorage.getItem("showSeconds") || "false")) ? 135.5 : 97
                 }}
             />
             <span className="tripRow">
@@ -55,7 +56,12 @@ export default ({ execution }: { execution: Execution }) => {
                 </span>
             </span>
 
-            <div className="executionTripInfo">
+            <div
+                className="executionTripInfo"
+                style={{
+                    marginLeft: (JSON.parse(localStorage.getItem("showSeconds") || "false")) ? "153px" : "120px"
+                }}
+            >
                 <span>
                     {t("vehicle")}: #{execution[EExecution.vehicleId].split("/")[1]}
                 </span>
@@ -93,8 +99,10 @@ const TripTime = ({ scheduled, delay = -1 }: { scheduled: number; delay?: number
                     "delay-" +
                     (delayExists ? (delayMinutes ? (delay > 0 ? "delayed" : "early") : "none") : "unknown")
                 }
-                style={{ fontWeight: delayExists ? "bold" : "normal" }}
-            >
+                style={{
+                    fontWeight: delayExists ? "bold" : "normal",
+                    marginLeft: delayExists ? 0 : 0.5,
+                }}            >
                 {getTime(scheduled + delay)}
             </span>
             )

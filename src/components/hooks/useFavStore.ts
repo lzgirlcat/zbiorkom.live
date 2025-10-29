@@ -3,6 +3,11 @@ import { create } from "zustand";
 
 interface FavState {
     favorites: FavoriteStop[];
+    addFavoriteStop: (
+        id: string,
+        location: Location,
+        isStation: boolean,
+    ) => void;
     addFavoriteDirection: (
         id: string,
         location: Location,
@@ -32,6 +37,26 @@ export default create<FavState>()((set) => ({
                 return { favorites };
             } else {
                 const favorites = [...state.favorites, { id, location, directions: [direction], isStation }];
+                localStorage.setItem(key, JSON.stringify(favorites));
+
+                return { favorites };
+            }
+        });
+    },
+    addFavoriteStop: (id, location, isStation) => {
+        set((state) => {
+            const favorite = state.favorites.find((fav) => fav.id === id);
+
+            if (favorite) {
+                const directions = [...favorite.directions];
+                const favorites = state.favorites.map((fav) =>
+                    fav.id === id ? { ...fav, directions } : fav,
+                );
+                localStorage.setItem(key, JSON.stringify(favorites));
+
+                return { favorites };
+            } else {
+                const favorites = [...state.favorites, { id, location, directions: [], isStation }];
                 localStorage.setItem(key, JSON.stringify(favorites));
 
                 return { favorites };

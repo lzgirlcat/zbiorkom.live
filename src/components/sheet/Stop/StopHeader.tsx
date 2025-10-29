@@ -1,15 +1,23 @@
 import { Box, IconButton, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { AccessTime, Close, StarOutline } from "@mui/icons-material";
+import { AccessTime, Close, Star, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import StopTag from "@/ui/StopTag";
-import { EStopDepartures } from "typings";
+import { EStop, EStopDeparture, EStopDepartures } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
+import useFavStore from "@/hooks/useFavStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default () => {
     const { city, stop } = useParams();
     const navigate = useNavigate();
     const goBack = useGoBack();
+
+    const [favorites, add] = useFavStore(
+        useShallow((state) => [state.favorites, state.addFavoriteStop]),
+    );
+
+    const isFavorite = favorites.some(e => e.id === stop!);
 
     const { data } = useQueryStopDepartures({
         city: window.location.pathname.includes("/station") ? "pkp" : city!,
@@ -63,15 +71,18 @@ export default () => {
                     },
                 }}
             >
-                <IconButton size="small" onClick={() => navigate(window.location.pathname + "/addToFav")}>
-                    <StarOutline />
+                <IconButton size="small" onClick={() => {
+                    add(stop!, data[EStopDepartures.stop][EStop.location], data[EStopDepartures.stop][EStop.city] === "pkp");
+                    navigate(window.location.pathname + "/addToFav");
+                }}>
+                    {isFavorite ? <Star />: <StarOutline />}
                 </IconButton>
 
                 <IconButton size="small" onClick={() => navigate(window.location.pathname + "/time")}>
                     <AccessTime />
                 </IconButton>
 
-                <IconButton size="small" onClick={() => goBack()}>
+                <IconButton size="small" onClick={() => goBack({ home: true })}>
                     <Close />
                 </IconButton>
             </Box>

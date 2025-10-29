@@ -34,7 +34,7 @@ export default () => {
 
             <Fab
                 color="primary"
-                sx={{ position: "absolute", right: 16, top: 16 * 13, opacity: 0 }}
+                sx={{ position: "absolute", right: 16, top: 16 * 13}}
                 size="small"
                 onClick={() => navigate(`/${city}/directions`)}
             >
