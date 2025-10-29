@@ -128,7 +128,7 @@ export default ({
                 />
             </List>
 
-            {localStorage.getItem("themeColor") === "#720546" && (
+            {(localStorage.getItem("themeColor") || "#720546") === "#720546" && (
                 <img
                     src="/zandbi.jpg"
                     style={{

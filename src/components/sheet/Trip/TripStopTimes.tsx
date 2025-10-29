@@ -61,7 +61,7 @@ export default ({ update, hasDeparted }: Props) => {
                 <Typography
                     className={`delay delay-${arrivalTime[2]}`}
                 >
-                    {arrivalTime[1]}
+                    {arrivalTime[2] ? arrivalTime[1] : arrivalTime[0]}
                 </Typography>
                 </>
             )}
@@ -73,7 +73,7 @@ export default ({ update, hasDeparted }: Props) => {
             <Typography
                 className={`delay delay-${departureTime[2]}`}
             >
-                {departureTime[1]}
+                {departureTime[2] ? departureTime[1] : departureTime[0]}
             </Typography>
         </Box>
     );
