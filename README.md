@@ -1,6 +1,6 @@
 # zbiorkom.girlc.at
 
-## smierć tyranii dominikkowej!! chwała zbiorkomowi
+## smierć tyranii dominikkowej!! chwała zbiorkomowi!!!!!!!!
 
 
 ![](public/arson.png)
