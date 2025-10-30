@@ -1,4 +1,5 @@
 import { DelayType } from "typings";
+import cities from "cities";
 
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
@@ -94,3 +95,33 @@ export const share = (url: string) => {
         navigator.clipboard.writeText(url);
     }
 };
+
+
+export const getInitialViewState = (cityId: string) => {
+    const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
+    const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
+    const lfl = JSON.parse(localStorage.getItem(`lastFocusedLocation.${cityId}`) || "null");
+
+    if (moveToLastLocation && lastUserLocation?.lastUpdate > Date.now() - 1000 * 60 * 60 * 24) {
+        return {
+            longitude: lastUserLocation.location[0],
+            latitude: lastUserLocation.location[1],
+            zoom: lfl[2],
+        };
+    } else if (localStorage.getItem("rememberLastFocusedLocation") === "true" && lfl) {
+        return {
+            longitude: lfl[0],
+            latitude: lfl[1],
+            zoom: lfl[2],
+        };
+    } else {
+        const location = cities[cityId]?.location || cities["warsaw"].location;
+        const zoom = cities[cityId]?.zoom || 13.5;
+
+        return {
+            longitude: location[0],
+            latitude: location[1],
+            zoom,
+        };
+    }
+}

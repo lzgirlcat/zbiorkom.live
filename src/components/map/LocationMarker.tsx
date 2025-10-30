@@ -91,7 +91,7 @@ export default memo(() => {
 
             map.easeTo({
                 center: location,
-                zoom: zoom > 15 ? zoom : 15,
+                zoom: zoom > 14 ? zoom : 14,
             });
         }
     };

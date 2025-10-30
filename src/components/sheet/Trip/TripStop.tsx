@@ -55,7 +55,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
             onDoubleClick={() =>
                 map?.flyTo({
                     center: stop[ETripStop.location],
-                    zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                    zoom: map.getZoom() > 14 ? map.getZoom() : 14,
                 })
             }
             onClick={() =>

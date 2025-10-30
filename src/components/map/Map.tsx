@@ -6,32 +6,15 @@ import mapStyle from "./mapStyle";
 import cities from "cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
+import { getInitialViewState } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const [error, setError] = useState("");
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
-        const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
-        const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
-
-        if (moveToLastLocation && lastUserLocation?.lastUpdate > Date.now() - 1000 * 60 * 60 * 8) {
-            return {
-                longitude: lastUserLocation.location[0],
-                latitude: lastUserLocation.location[1],
-                zoom: 16,
-            };
-        } else {
-            const cityId = pathname.split("/")[1];
-            const location = cities[cityId]?.location || cities["warsaw"].location;
-            const zoom = cities[cityId]?.zoom || 16;
-
-            return {
-                longitude: location[0],
-                latitude: location[1],
-                zoom,
-            };
-        }
+        const cityId = pathname.split("/")[1];
+        return getInitialViewState(cityId);
     }, []);
 
     if (error) return <Error message={error} />;
@@ -40,7 +23,13 @@ export default memo(({ children }: { children: ReactElement[] }) => {
         <Map
             mapStyle={mapStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
-            onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
+            onMoveEnd={(e) => {
+                document.getElementById("root")?.classList.remove("moving");
+                const cityId = pathname.split("/")[1];
+                if (cityId in cities && localStorage.getItem("rememberLastFocusedLocation") === "true") {
+                    localStorage.setItem(`lastFocusedLocation.${cityId}`, JSON.stringify([e.viewState.longitude, e.viewState.latitude, e.viewState.zoom]));
+                }
+            }}
             onLoad={({ target }: { target: any }) => {
                 target.touchZoomRotate.disableRotation();
 

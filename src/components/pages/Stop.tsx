@@ -33,7 +33,7 @@ export default memo(() => {
         if (!hasDataFetched) {
             map?.flyTo({
                 center: stopData[EStop.location],
-                zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                zoom: map.getZoom() > 14 ? map.getZoom() : 14,
                 padding: { top: 0, left: 0, right: 0, bottom: 0 },
             });
 

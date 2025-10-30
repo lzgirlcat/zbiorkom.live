@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import CitySelect from "./CitySelect";
 import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
+import { getInitialViewState } from "@/util/tools";
 
 const color = "#cdeda3";
 
@@ -99,10 +100,12 @@ export default () => {
                         setOpen(false);
                         localStorage.setItem("city", city.id);
 
+                        const ivs = getInitialViewState(city.id);
+                        console.log(ivs)
                         window.skipPadding = true;
                         map?.flyTo({
-                            center: city.location,
-                            zoom: city.zoom || 16,
+                            center: [ivs.longitude, ivs.latitude],
+                            zoom: ivs.zoom,
                             duration: 0,
                             padding: {
                                 top: 0,

@@ -56,7 +56,7 @@ export default memo(() => {
         if (vehicleData?.[EVehicle.location]) {
             map?.flyTo({
                 center: vehicleData[EVehicle.location],
-                zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                zoom: map.getZoom() > 14 ? map.getZoom() : 14,
             });
         } else if (tripData) {
             const bounds = tripData[ETrip.stops]
@@ -70,7 +70,7 @@ export default memo(() => {
                     top: 30,
                     bottom: getSheetHeight(),
                 },
-                maxZoom: 16,
+                maxZoom: 13.5,
             });
         }
 

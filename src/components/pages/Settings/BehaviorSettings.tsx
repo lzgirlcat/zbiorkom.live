@@ -11,6 +11,9 @@ export default memo(() => {
     const [useLocationSorting, setSorting] = useState<boolean>(
         JSON.parse(localStorage.getItem("useLocationSorting") || "false"),
     );
+    const [rememberLastFocusedLocation, setRememberLastFocusedLocation] = useState<boolean>(
+        JSON.parse(localStorage.getItem("rememberLastFocusedLocation") || "false"),
+    );
     const [useStopCodeAsIcon, setStopCodeAsIcon] = useState<boolean>(
         JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false"),
     );
@@ -35,6 +38,11 @@ export default memo(() => {
             key: "useLocationSorting",
             value: useLocationSorting,
             setValue: setSorting,
+        },
+        {
+            key: "rememberLastFocusedLocation",
+            value: rememberLastFocusedLocation,
+            setValue: setRememberLastFocusedLocation,
         },
         {
             key: "useStopCodeAsIcon",
