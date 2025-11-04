@@ -1,15 +1,15 @@
+import { basicStyle } from "./mapStyle";
 import { memo, ReactElement, useMemo, useState } from "react";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
 import Error from "@/pages/Error";
-import mapStyle from "./mapStyle";
 import cities from "cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getInitialViewState } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState("");
+    const [error, setError] = useState<string>();
     const { pathname } = useLocation();
 
     const initialViewState = useMemo(() => {
@@ -21,7 +21,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
 
     return (
         <Map
-            mapStyle={mapStyle}
+            mapStyle={basicStyle}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={(e) => {
                 document.getElementById("root")?.classList.remove("moving");
@@ -34,18 +34,13 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                 target.touchZoomRotate.disableRotation();
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
-                    if (!document.hidden) {
-                        window.location.reload();
-                    } else {
-                        window.addEventListener("focus", () => {
-                            window.location.reload();
-                        });
-                    }
+                    setError("WebGL context lost");
                 });
             }}
             onError={(e) => setError(e.error.message)}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
+            attributionControl={false}
             dragRotate={false}
             minZoom={5}
             maxPitch={0}
