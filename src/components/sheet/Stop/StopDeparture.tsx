@@ -31,31 +31,18 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const isCancelled = delay === "cancelled";
     const showCountdown = !isCancelled && estimated > Date.now();
 
-    const onSuperClick = () => {
-        navigate(
-            [
-                city,
-                vehicle ? "vehicle" : "trip",
-                encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
-            ].join("/") + (isStation ? "?pkp" : ""),
-        );
-    };
-
     return (
         <ListItemButton
             onDoubleClick={() => {
-                if (isStation) return onSuperClick();
-
-                if (vehicle) {
-                    map?.flyTo({
-                        center: vehicle[EVehicle.location],
-                        zoom: map.getZoom() > 14 ? map.getZoom() : 14,
-                    });
-                } else {
-                    setExpanded(!isExpanded);
-                }
+                navigate(
+                    [
+                        city,
+                        vehicle ? "vehicle" : "trip",
+                        encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
+                    ].join("/") + (isStation ? "?pkp" : ""),
+                );
             }}
-            onClick={onSuperClick}
+            onClick={() => setExpanded(!isExpanded)}
             sx={{
                 display: "flex",
                 flexDirection: "column",

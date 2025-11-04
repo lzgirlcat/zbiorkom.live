@@ -113,6 +113,16 @@ export default () => {
                     <Save />
                     {t("exportSettingsBackup")}
                 </ButtonBase>
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    gap: 0.5,
+                    marginTop: 0.5,
+                }}
+            >
                 <ButtonBase
                     onClick={() => {localStorage.clear(); location.reload()}}
                     sx={{
@@ -123,7 +133,7 @@ export default () => {
                         // borderBottomRightRadius: 16,
                         padding: 2,
                         backgroundColor: "background.paper",
-                        width: "50%",
+                        width: "100%",
                         fontSize: 18,
                         fontWeight: 500,
                         whiteSpace: "nowrap",

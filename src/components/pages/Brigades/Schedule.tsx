@@ -99,6 +99,12 @@ export default ({ city, route, brigade }: Props) => {
 
     useEffect(() => {
         updateScroll();
+        if (JSON.parse(localStorage.getItem("autoScrollToBrigade") || "true")) {
+            listRef.current?.children[currentTripIndex]?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
     }, [trips, listRef]);
 
     return (

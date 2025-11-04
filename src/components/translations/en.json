@@ -141,7 +141,8 @@
         "exportSettingsBackup": "Export",
         "importSettingsBackup": "Import",
         "clearSettings": "Restore Defaults",
-        "searchGroupOrdering": "Search order"
+        "searchGroupOrdering": "Search order",
+        "rememberLastFocusedLocation": "Remember the last focused map position"
     },
     "Languages": {
         "en": "English",

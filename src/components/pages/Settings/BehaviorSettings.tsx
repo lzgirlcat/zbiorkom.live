@@ -27,6 +27,9 @@ export default memo(() => {
     const [showSeconds, setShowSeconds] = useState<boolean>(
         JSON.parse(localStorage.getItem("showSeconds") || "false")
     );
+    const [autoScrollToBrigade, setAutoScrollToBrigade] = useState<boolean>(
+        JSON.parse(localStorage.getItem("autoScrollToBrigade") || "true"),
+    );
 
     const settings = [
         {
@@ -63,6 +66,11 @@ export default memo(() => {
             key: "showSeconds",
             value: showSeconds,
             setValue: setShowSeconds,
+        },
+        {
+            key: "autoScrollToBrigade",
+            value: autoScrollToBrigade,
+            setValue: setAutoScrollToBrigade,
         },
     ] as const;
 
