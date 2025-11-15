@@ -107,61 +107,7 @@ export default () => {
                                     },
                                 }}
                             />
-                            <VirtuosoGrid
-  totalCount={combinedItems.length}
-  itemContent={(index) => {
-    const item = combinedItems[index];
-
-    if (item.type === 'agency') {
-      const agency = item.data;
-      return (
-        <div
-          className="routeChip"
-          style={{ backgroundColor: agency[1] }}
-          onClick={() =>
-            setSelectedAgencies((prev) =>
-              prev.includes(agency[0])
-                ? prev.filter((a) => a !== agency[0])
-                : [...prev, agency[0]],
-            )
-          }
-        >
-          {agency[0] && agencyIcons[agency[0]] ? (
-            <svg viewBox="0 0 24 24" width="1.1em" fill="currentColor">
-              <Icon agency={agency[0]} />
-            </svg>
-          ) : (
-            agency[0].toLowerCase().replace("_", "")
-          )}
-        </div>
-      );
-    } else {
-      const type = item.data;
-      return (
-        <div
-          className="routeChip"
-          style={{ backgroundColor: type[1] }}
-          onClick={() =>
-            setSelectedTypes((prev) =>
-              prev.includes(type[0])
-                ? prev.filter((t) => t !== type[0])
-                : [...prev, type[0]],
-            )
-          }
-        >
-          <svg viewBox="0 0 24 24" width="1.1em" fill="currentColor">
-            <Icon type={type[0]} />
-          </svg>
-        </div>
-      );
-    }
-  }}
-//   components={{
-//     List: (props) => <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '8px' }} {...props} />,
-//     Item: (props) => <div {...props} />,
-//   }}
-/>
-                            {/* <Paper
+                            <Paper
                                 sx={{
                                     display: "grid", // use CSS Grid
                                     gridAutoFlow: "column",
@@ -214,7 +160,7 @@ export default () => {
                                             </svg>
                                         </div>
                                     ))}
-                            </Paper> */}
+                            </Paper>
                             <VirtuosoGrid
                                 data={routes || []}
                                 itemContent={(i, route) => (
