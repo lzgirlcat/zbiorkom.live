@@ -1,4 +1,11 @@
-export type VehicleType = 0 | 1 | 2 | 3 | 4 | 11 | 20;
+export type VehicleType =
+    | 0 // tram
+    | 1 // subway
+    | 2 // rail
+    | 3 // bus
+    | 4 // ferry
+    | 11 //trolleybus
+    | 20; // car(apparently https://files.girlc.at/f/8d7efebe-e771-4952-a09d-4ab7dd78e17e/image.png )
 export type DelayType = number | "departure" | "departed" | "cancelled" | "live" | "scheduled";
 export type Location = [number, number];
 export type SheetContentTypes =
