@@ -137,6 +137,12 @@
         "welcomeText": "Select a city to see live public transport on map.",
         "searchCities": "Search cities",
         "useStopCodeAsIcon": "Use stop code as icon",
+        "settingsBackup": "Settings backup",
+        "exportSettingsBackup": "Export",
+        "importSettingsBackup": "Import",
+        "clearSettings": "Restore Defaults",
+        "searchGroupOrdering": "Search order",
+        "rememberLastFocusedLocation": "Remember the last focused map position",
         "disableLiquidGlass": "Disable liquid glass effect"
     },
     "Languages": {
