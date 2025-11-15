@@ -48,7 +48,7 @@ export default ({ update, hasDeparted }: Props) => {
                     textAlign: "right",
                     fontWeight: "inherit",
                 },
-                opacity: hasDeparted ? 0.5 : undefined,
+                opacity: hasDeparted ? 0.7 : undefined,
             }}
         >
             {!(mergeArrivalDeparture && arrivalTime[1] === departureTime[1]) && (

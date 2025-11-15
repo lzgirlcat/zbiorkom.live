@@ -56,7 +56,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 "&:hover, &:focus": {
                     backgroundColor: isExpanded ? "background.paper" : "transparent",
                 },
-                opacity: isCancelled ? 0.5 : undefined,
+                opacity: isCancelled ? 0.7 : undefined,
             }}
         >
             <ListItemText

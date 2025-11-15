@@ -17,6 +17,7 @@ export type SheetContentTypes =
     | "FavoriteStops"
     | "Trip"
     | "Route"
+    | "MapStyle"
     | null;
 
 export interface City {

@@ -1,27 +1,40 @@
-import { basicStyle } from "./mapStyle";
-import { memo, ReactElement, useMemo, useState } from "react";
+import { mapStyles } from "./mapStyle";
+import { memo, ReactElement, useEffect, useMemo } from "react";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
-import Error from "@/pages/Error";
 import cities from "cities";
+import { useMapStyleStore } from "@/hooks/useMapStyleStore";
+import { useShallow } from "zustand/react/shallow";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getInitialViewState } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
-    const [error, setError] = useState<string>();
     const { pathname } = useLocation();
+    const [selectedStyle, basicAppearance] = useMapStyleStore(
+        useShallow((state) => [state.selectedStyle, state.basicAppearance]),
+    );
+
+    useEffect(() => {
+        const className = "map-dark";
+        const shouldEnable = basicAppearance === "dark";
+
+        if (shouldEnable) {
+            document.body.classList.add(className);
+        }
+        return () => {
+            document.body.classList.remove(className);
+        };
+    }, [selectedStyle, basicAppearance]);
 
     const initialViewState = useMemo(() => {
         const cityId = pathname.split("/")[1];
         return getInitialViewState(cityId);
     }, []);
 
-    if (error) return <Error message={error} />;
-
     return (
         <Map
-            mapStyle={basicStyle}
+            mapStyle={(mapStyles[selectedStyle] || mapStyles.basic).style}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
             onMoveEnd={(e) => {
                 document.getElementById("root")?.classList.remove("moving");
@@ -34,10 +47,15 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                 target.touchZoomRotate.disableRotation();
 
                 target.getCanvas().addEventListener("webglcontextlost", () => {
-                    setError("WebGL context lost");
+                    if (!document.hidden) {
+                        window.location.reload();
+                    } else {
+                        document.addEventListener("focus", () => window.location.reload(), {
+                            once: true,
+                        });
+                    }
                 });
             }}
-            onError={(e) => setError(e.error.message)}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}
             attributionControl={false}

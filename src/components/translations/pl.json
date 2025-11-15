@@ -139,6 +139,7 @@
         "welcomeText": "Wybierz miasto, aby zobaczyć komunikację miejską na żywo.",
         "searchCities": "Wyszukaj miasto",
         "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony",
+        "disableLiquidGlass": "Wyłącz efekt rozmytego szkła",
         "settingsBackup": "Kopia Zapasowa Ustawień",
         "exportSettingsBackup": "Zapisz",
         "importSettingsBackup": "Importuj",
@@ -226,5 +227,9 @@
         "lastUpdated": "Ostatnio zaktualizowano",
         "leave": "Wyjdź o",
         "arrive": "Przyjazd o"
+    },
+    "Layers": {
+        "layers": "Warstwy",
+        "darkMode": "Ciemny motyw"
     }
 }

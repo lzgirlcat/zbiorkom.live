@@ -17,6 +17,9 @@ export default memo(() => {
     const [useStopCodeAsIcon, setStopCodeAsIcon] = useState<boolean>(
         JSON.parse(localStorage.getItem("useStopCodeAsIcon") || "false"),
     );
+    const [disableLiquidGlass, setDisableLiquidGlass] = useState<boolean>(
+        JSON.parse(localStorage.getItem("disableLiquidGlass") || "false"),
+    );
 
     const [showScheduledTimes, setShowScheduledTimes] = useState<boolean>(
         JSON.parse(localStorage.getItem("showScheduledTimes") || "true")
@@ -72,7 +75,20 @@ export default memo(() => {
             value: autoScrollToBrigade,
             setValue: setAutoScrollToBrigade,
         },
-    ] as const;
+        {
+            key: "disableLiquidGlass",
+            value: disableLiquidGlass,
+            setValue: setDisableLiquidGlass,
+            action: (value: boolean) => {
+                document.body.classList.toggle("disable-liquid-glass", value);
+            },
+        },
+    ] as {
+        key: string;
+        value: boolean;
+        setValue: (value: boolean) => void;
+        action?: (value: boolean) => void;
+    }[];
 
     return (
         <Box
@@ -94,7 +110,7 @@ export default memo(() => {
                 {t("behavior")}
             </h2>
 
-            {settings.map(({ key, value, setValue }) => (
+            {settings.map(({ key, value, setValue, action }) => (
                 <FormControlLabel
                     key={key}
                     control={
@@ -103,6 +119,7 @@ export default memo(() => {
                             onChange={() => {
                                 setValue(!value);
                                 localStorage.setItem(key, JSON.stringify(!value));
+                                action?.(!value);
                             }}
                         />
                     }
