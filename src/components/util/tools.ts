@@ -23,7 +23,7 @@ export const getDelay = (delay?: DelayType) => {
 };
 
 export const msToTime = (ms: number, withSeconds?: boolean) => {
-    let formattedTime: string[] = [];
+    let formattedTime: string = "";
 
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -32,11 +32,12 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
     const remainingMinutes = minutes % 60;
     const remainingSeconds = seconds % 60;
 
-    if (hours > 0) formattedTime.push(`${hours} h`);
-    if (remainingMinutes > 0) formattedTime.push(`${remainingMinutes} min`);
-    if (withSeconds) formattedTime.push(`${remainingSeconds} s`);
+    if (hours > 0) formattedTime+=`${hours}h`;
+    if (remainingMinutes > 0) formattedTime +=`${remainingMinutes}`;
+    if (hours == 0 || withSeconds) formattedTime+= " min"; else formattedTime+= "m"
+    if (withSeconds) formattedTime +=`${remainingSeconds} s`;
 
-    return formattedTime.join(" ");
+    return formattedTime
 };
 
 export const polylineToGeoJson = (polyline: string) => {

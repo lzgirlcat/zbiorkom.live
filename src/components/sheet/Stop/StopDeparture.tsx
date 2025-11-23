@@ -26,7 +26,8 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const alert = departure[EStopDeparture.alert];
 
     const hasDelay = typeof delay === "number" && !!Math.floor(Math.abs(delay) / 60000);
-    const minutesToDeparture = useTime(estimated);
+    const useSeconds = estimated - Date.now() < 60000;
+    const timeToDeparture = useSeconds ? useTime(estimated, true) : useTime(estimated);
 
     const isCancelled = delay === "cancelled";
     const showCountdown = !isCancelled && estimated > Date.now();
@@ -69,7 +70,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                             brigade={departure[EStopDeparture.brigade]}
                         />
 
-                        {showCountdown && <span>{minutesToDeparture > 0 ? minutesToDeparture : "<1"}</span>}
+                        {showCountdown && <span>{timeToDeparture > 0 ? timeToDeparture : "<1"}</span>}
                     </>
                 }
                 secondary={
@@ -106,7 +107,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                             )}
                         </Box>
 
-                        {showCountdown && <span>min</span>}
+                        {showCountdown && <span>{useSeconds? "sec": "min"}</span>}
                     </>
                 }
                 primaryTypographyProps={{
