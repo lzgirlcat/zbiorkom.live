@@ -1,12 +1,15 @@
-import { ArrowDropUp, GpsNotFixed, LocationDisabled } from "@mui/icons-material";
+import { ArrowDropUp, GpsNotFixed, LocationDisabled, LocationCity } from "@mui/icons-material";
 import { memo, useEffect, useState } from "react";
 import { Marker, useMap } from "@vis.gl/react-maplibre";
 import { Box, Fab } from "@mui/material";
 import useLocationStore from "@/hooks/useLocationStore";
 import { useShallow } from "zustand/react/shallow";
 import { Location } from "typings";
+import { useLocation } from "react-router-dom";
+import cities from "cities";
 
 export default memo(() => {
+    const { pathname } = useLocation();
     const [userLocation, setUserLocation] = useLocationStore(
         useShallow((state) => [state.userLocation, state.setUserLocation]),
     );
@@ -85,13 +88,13 @@ export default memo(() => {
         }
     };
 
-    const moveToLocation = (location: Location) => {
+    const moveToLocation = (location: Location, zoom: number | undefined) => {
         if (map) {
-            const zoom = map.getZoom();
+            const current_zoom = map.getZoom();
 
             map.easeTo({
                 center: location,
-                zoom: zoom > 14 ? zoom : 14,
+                zoom: zoom ? zoom : current_zoom > 14 ? current_zoom : 14,
             });
         }
     };
@@ -116,12 +119,28 @@ export default memo(() => {
         }
     };
 
+    const moveToCity = () => {
+        const cityId = pathname.split("/")[1];
+        const location = cities[cityId]?.location || cities["warsaw"].location;
+        const zoom = cities[cityId]?.zoom || 13.5;
+        moveToLocation(location, zoom);
+    };
+
     return (
         <>
             <Fab
                 color="primary"
+                sx={{ position: "absolute", right: 20, bottom: 72 }}
+                size="small"
+                onClick={() => moveToCity()}
+                id="city"
+            >
+                <LocationCity />
+            </Fab>
+            <Fab
+                color="primary"
                 sx={{ position: "absolute", right: 16, bottom: 16 }}
-                size="large"
+                size="medium"
                 onClick={() => moveToUser()}
                 id="gps"
             >
