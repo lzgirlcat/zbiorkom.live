@@ -17,13 +17,13 @@ export default ({ stop, color, index, type}: Props) => {
 
     return (
         <ListItemButton
-            onDoubleClick={() =>
+            onClick={() =>
                 map?.flyTo({
                     center: stop[ETripStop.location],
                     zoom: map.getZoom() > 14 ? map.getZoom() : 14,
                 })
             }
-            onClick={() =>
+            onDoubleClick={() =>
                 navigate(
                     `/${city}/${type == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`,
                 )

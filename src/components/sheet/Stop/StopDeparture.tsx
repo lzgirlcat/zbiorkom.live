@@ -15,7 +15,6 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
     const { t } = useTranslation("Vehicle");
     const [isExpanded, setExpanded] = useState(false);
 
-    const { current: map } = useMap();
     const navigate = useNavigate();
     const { city } = useParams();
 
