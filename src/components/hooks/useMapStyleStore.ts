@@ -12,7 +12,7 @@ interface MapStyleState {
 }
 
 export const useMapStyleStore = create<MapStyleState>((set) => ({
-    selectedStyle: localStorage.getItem("mapStyle") || "basic",
+    selectedStyle: mapStyles[localStorage.getItem("mapStyle") as keyof typeof mapStyles] ? localStorage.getItem("mapStyle") as keyof typeof mapStyles : "basic",
     basicAppearance: localStorage.getItem("mapStyleBasicVariant") || "light",
     selectStyle: (style) => {
         localStorage.setItem("mapStyle", style);

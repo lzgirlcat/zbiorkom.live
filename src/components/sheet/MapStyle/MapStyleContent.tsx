@@ -76,7 +76,6 @@ export default () => {
                         >
                             <img
                                 src={`/maps/${id}.webp`}
-                                alt={definition.name}
                                 style={{ width: 100, height: 100 }}
                             />
                             <span>{definition.name}</span>
