@@ -1,20 +1,21 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Build, EventNote, MoreVert, Report, Share } from "@mui/icons-material";
+import { Build, EventNote, MoreVert, Report, Share, Train } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { EStopUpdate, EVehicle } from "typings";
+import { ERoute, EStopUpdate, ETrip, EVehicle } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
 import { share } from "@/util/tools";
 
 export default () => {
-    const [vehicle, lastPing, hasAlerts] = useVehicleStore(
+    const [vehicle, lastPing, hasAlerts, trip] = useVehicleStore(
         useShallow((state) => [
             state.vehicle,
             state.lastPing,
             state.stops?.some((stop) => stop[EStopUpdate.alerts]?.length > 0),
+            state.trip
         ]),
     );
 
@@ -89,6 +90,16 @@ export default () => {
                             <Build fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary={t("vehicleInfo")} />
+                    </MenuItem>
+                )}
+                {trip && trip[ETrip.route][ERoute.type] == 2 && trip[ETrip.route][ERoute.agency] == "IC" && (
+                    <MenuItem
+                        onClick={() => window.open("https://bocznica.eu/stats/" + trip[ETrip.shortName].split(" ")[0], "_blank")}
+                    >
+                        <ListItemIcon>
+                            <Train fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary={"Bocznica.eu"} />
                     </MenuItem>
                 )}
             </Menu>
