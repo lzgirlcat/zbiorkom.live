@@ -23,6 +23,6 @@ window.Gay = {
 };
 
 console.log(
-    "%czbiorkom.live",
+    "%cjebać dominikkka!!!!!!",
     "font-size: 64px; color: #276b2b; font-weight: bold; text-shadow: 0 0 10px #276b2b;",
 );

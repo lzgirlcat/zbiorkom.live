@@ -1,7 +1,7 @@
 {
-    "short_name": "zbiorkom.live",
-    "name": "zbiorkom.live",
-    "description": "Odkrywaj komunikację miejską w swoim mieście na nowo ✨ z zbiorkom.live. Śledź pojazdy na mapie, sprawdź ich trasy oraz najbliższe odjazdy z przystanków. Dostosuj wyświetlanie dzięki filtrom linii i modelu pojazdu.",
+    "short_name": "zbiorkom.girlc.at",
+    "name": "zbiorkom.girlc.at",
+    "description": "Odkrywaj komunikację miejską w swoim mieście na nowo ✨ z zbiorkom.girlc.at. Śledź pojazdy na mapie, sprawdź ich trasy oraz najbliższe odjazdy z przystanków. Dostosuj wyświetlanie dzięki filtrom linii i modelu pojazdu.",
     "categories": ["navigation", "travel", "utilities"],
     "icons": [
         {

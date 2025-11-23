@@ -16,7 +16,7 @@ export default () => {
         const blob = new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "zbiorkom.live.json";
+        link.download = "zbiorkom.json";
         link.click();
         URL.revokeObjectURL(link.href);
     };

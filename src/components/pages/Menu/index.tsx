@@ -69,7 +69,7 @@ export default ({
                         flexDirection: "column",
                     }}
                 >
-                    <b>Zbiorkom.live</b>
+                    <b>zbiorkom.girlc.at</b>
                     <span
                         style={{
                             display: "flex",
@@ -188,20 +188,17 @@ export default ({
                 }}
             >
                 <Box>
-                    <IconButton href="https://www.facebook.com/profile.php?id=61558868339377" target="_blank">
+                    <IconButton href="https://girlc.at/assets/redirect.html" target="_blank">
                         <Facebook htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
-                    <IconButton href="https://www.instagram.com/zbiorkom.live/" target="_blank">
+                    <IconButton href="https://girlc.at/assets/redirect.html" target="_blank">
                         <Instagram htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
-                    <IconButton href="https://github.com/DomeQdev/zbiorkom.live" target="_blank">
+                    <IconButton href="https://github.com/lzgirlcat/zbiorkom.live" target="_blank">
                         <GitHub htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                     <IconButton href="https://discord.gg/gUhMz2Wckf" target="_blank">
                         <DiscordIcon htmlColor="hsla(0, 0%, 100%, 0.6)" />
-                    </IconButton>
-                    <IconButton href="mailto:admin@zbiorkom.live" target="_blank">
-                        <Email htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                 </Box>
 
