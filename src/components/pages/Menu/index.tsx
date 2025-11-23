@@ -209,7 +209,7 @@ export default ({
                         textDecoration: "none",
                         color: "inherit",
                     }}
-                    href="/privacy-policy.pdf"
+                    href="https://girlc.at/assets/redirect.html"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
