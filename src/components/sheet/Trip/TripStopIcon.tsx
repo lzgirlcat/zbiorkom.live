@@ -20,37 +20,35 @@ export default ({ color: [color, text, background], first, last, type, percentTr
                     border: `3px solid ${color}`,
                 }}
             />
-            {(!first) && (
-                <span
-                    className={last ? "vehicleStopIconLineLast":"vehicleStopIconLine"}
-                    style={{
-                        backgroundColor: color,
-                        marginLeft: lineMargin,
-                    }}
-                >
-                    {percentTraveled !== undefined && (
-                        <SvgIcon
-                            key="percentTraveled"
-                            sx={{
-                                position: "absolute",
-                                marginLeft: "-5px",
-                                marginTop: "-14px",
-                                top: `${percentTraveled}%`,
-                                fontSize: "26px",
-                                color: text,
-                                backgroundColor: background,
-                                borderRadius: "50%",
-                                padding: "3px",
-                                zIndex: 20,
-                                border: `1px solid ${color}`,
-                                transition: "top 0.5s",
-                            }}
-                        >
-                            <Icon type={type} />
-                        </SvgIcon>
-                    )}
-                </span>
-            )}
+            <span
+                className={last ? "vehicleStopIconLineLast": first ? "vehicleStopIconLineFirst" : "vehicleStopIconLine"}
+                style={{
+                    backgroundColor: color,
+                    marginLeft: lineMargin,
+                }}
+            >
+                {percentTraveled !== undefined && (
+                    <SvgIcon
+                        key="percentTraveled"
+                        sx={{
+                            position: "absolute",
+                            marginLeft: "-5px",
+                            marginTop: "-14px",
+                            top: `${percentTraveled}%`,
+                            fontSize: "26px",
+                            color: text,
+                            backgroundColor: background,
+                            borderRadius: "50%",
+                            padding: "3px",
+                            zIndex: 20,
+                            border: `1px solid ${color}`,
+                            transition: "top 0.5s",
+                        }}
+                    >
+                        <Icon type={type} />
+                    </SvgIcon>
+                )}
+            </span>
         </>
     );
 };
