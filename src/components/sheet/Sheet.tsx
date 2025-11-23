@@ -27,6 +27,7 @@ const getType = () => {
     const { pathname } = useLocation();
 
     if (pathname.includes("layers")) return "MapStyle";
+    else if (pathname.includes("executions")) return null;
     else if (pathname.includes("favoriteStops")) return "FavoriteStops";
     else if (pathname.includes("filter")) return "Filter";
     else if (pathname.includes("route/")) return "Route";

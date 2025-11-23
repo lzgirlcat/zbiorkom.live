@@ -8,11 +8,14 @@ import { useQueryExecutions } from "@/hooks/useQueryExecutions";
 import { useTranslation } from "react-i18next";
 import { Virtuoso } from "react-virtuoso";
 import Execution from "./Execution";
+import VehicleInfo from "./VehicleInfo";
 
 import "../Brigades/brigades.css";
 import Alert from "@/ui/Alert";
 
 export default () => {
+    const { vehicle_id } = useParams();
+
     const { t } = useTranslation("Executions");
     const navigate = useNavigate();
     const { city } = useParams();
@@ -108,6 +111,7 @@ export default () => {
                     />
                 )}
             </DialogContent>
+            {vehicle_id && <VehicleInfo />}
         </Dialog>
     );
 };

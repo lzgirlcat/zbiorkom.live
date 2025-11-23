@@ -5,9 +5,11 @@ import { Box } from "@mui/material";
 import { ColorRole, generateDarkScheme } from "material-color-lite";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { EExecution, Execution, VehicleType } from "typings";
 
 export default ({ execution }: { execution: Execution }) => {
+    const navigate = useNavigate();
     const type = +execution[EExecution.vehicleId].split("/")[0] as VehicleType;
     const color = useThemeStore((state) => state.color);
     const { t } = useTranslation("Executions");
@@ -28,6 +30,7 @@ export default ({ execution }: { execution: Execution }) => {
                 backgroundColor: "background.paper",
                 position: "relative",
             }}
+            onClick={() => navigate(window.location.pathname + "/vehicle/" + encodeURIComponent(execution[EExecution.vehicleId]) + window.location.search)}
         >
             <span
                 className="vehicleStopIconLine executionLine"
