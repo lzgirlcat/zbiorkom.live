@@ -34,9 +34,12 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
 
     if (hours > 0) formattedTime+=`${hours}h`;
     if (remainingMinutes > 0) formattedTime +=`${remainingMinutes}`;
-    if (hours == 0 || withSeconds) formattedTime+= " min"; else formattedTime+= "m"
+    if (remainingMinutes > 0) {
+        if (hours == 0 && !withSeconds) {
+            formattedTime+= " min";
+        } else if (withSeconds) formattedTime += "m";
+    }
     if (withSeconds) formattedTime +=`${remainingSeconds} s`;
-
     return formattedTime
 };
 
