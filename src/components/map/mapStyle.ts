@@ -2,13 +2,13 @@ import { StyleSpecification } from "maplibre-gl";
 
 export const basicStyle = "/style.json";
 
-const rasterStyle = (tiles: string): StyleSpecification => ({
+const rasterStyle = (tiles: string[]): StyleSpecification => ({
     version: 8,
     name: "Raster Layer",
     sources: {
         raster: {
             type: "raster",
-            tiles: [tiles],
+            tiles: tiles,
             tileSize: 256,
         },
     },
@@ -24,19 +24,63 @@ const rasterStyle = (tiles: string): StyleSpecification => ({
     ],
 });
 
-export const openStreetMapStyle = rasterStyle("https://tile.openstreetmap.org/{z}/{x}/{y}.png");
+export const openStreetMapStyle = rasterStyle([
+    "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+]);
 
 export const geoportalStandardStyle = rasterStyle(
-    "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"
+    ["https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"]
 )
 
 export const mapboxSatelliteStyle = rasterStyle(
-    "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiemJpb3Jrb21saXZlIiwiYSI6ImNtZnNwbTVpZDA3YmEya3F2MTJkaW90eDAifQ.erqF5nTfk6StoSOU6wEsoQ",
+    ["https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiemJpb3Jrb21saXZlIiwiYSI6ImNtZnNwbTVpZDA3YmEya3F2MTJkaW90eDAifQ.erqF5nTfk6StoSOU6wEsoQ"],
 );
 
 export const geoportalHiResStyle = rasterStyle(
-    "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"
+    ["https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"]
 )
+
+// export const geoportalHiResStyle: StyleSpecification = {
+//     version: 8,
+//     name: "Raster Layer",
+//     sources: {
+//         hires: {
+//             type: "raster",
+//             tiles: ["https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"],
+//             tileSize: 256,
+//         },
+//         standard: {
+//             type: "raster",
+//             tiles: ["https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"],
+//             tileSize: 256,
+//         }
+//     },
+//     sprite: "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
+//     glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+//     layers: [
+//         {
+//             id: "standard",
+//             type: "raster",
+//             source: "standard",
+//             layout: {
+//                 "visibility": "visible"
+//             },
+//             paint: {
+//                 "raster-opacity": 1
+//             }
+//         },
+//         {
+//             id: "hires",
+//             type: "raster",
+//             source: "hires",
+//             layout: {
+//                 "visibility": "visible"
+//             },
+//         },
+//     ],
+// }
 
 export interface MapStyleDefinition {
     name: string;
