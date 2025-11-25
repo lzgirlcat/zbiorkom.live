@@ -27,7 +27,7 @@ export default ({ color: [color, text, background], first, last, type, percentTr
                     marginLeft: lineMargin,
                 }}
             >
-                {percentTraveled !== undefined && (
+                {percentTraveled !== undefined && (!first) && (
                     <SvgIcon
                         key="percentTraveled"
                         sx={{
