@@ -215,12 +215,20 @@ export enum EStopDeparture {
     alert = 11,
 }
 
-export type StopTime = [scheduled: number, estimated: number, delay: DelayType];
+export enum StatusWpisuKontrolnego {
+  Scheduled = 0,
+  Estimated = 1,
+  Confirmed = 2,
+  Cancelled = 3,
+}
+
+export type StopTime = [scheduled: number, estimated: number, delay: DelayType, swk?: StatusWpisuKontrolnego | null];
 
 export enum EStopTime {
     scheduled = 0,
     estimated = 1,
     delay = 2,
+    swk = 3,
 }
 
 export type StopUpdate = [
@@ -494,3 +502,11 @@ declare global {
 
     var Gay: Gay;
 }
+
+export type RawSearchResult = {
+    routes: Route[];
+    stops: [id: string, city: string, name: string][];
+    stations: [id: string, city: string, name: string][];
+    relations: [id: string, route: Route, shortName: string, start: number, end: number, headsign: string][];
+    vehicles: [id: string, route: Route, brigade: string, headsign?: string, model?: string][];
+};

@@ -129,7 +129,11 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         }}
                         component="span"
                     >
-                        <VehicleDelay delay={delay} />
+                        <VehicleDelay
+                            delay={delay}
+                            stopTimes={[update[EStopUpdate.arrival], update[EStopUpdate.departure]]}
+                            isLast={index === trip[ETrip.stops].length -1}
+                        />
 
                         {platform && (
                             <span>

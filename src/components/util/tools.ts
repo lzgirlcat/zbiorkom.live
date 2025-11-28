@@ -1,4 +1,4 @@
-import { DelayType } from "typings";
+import { DelayType, RawSearchResult, APISearch } from "typings";
 import cities from "cities";
 
 export const getTime = (time: number) => {
@@ -128,4 +128,22 @@ export const getInitialViewState = (cityId: string) => {
             zoom,
         };
     }
+}
+
+export const buildSearchView = (order: (keyof RawSearchResult)[], results: RawSearchResult): APISearch => {
+    const finalResults = order.flatMap((type, index) => {
+        return results[type].map((result, index, array) => ({
+            [type]: result,
+            borderTop: index === 0 || undefined,
+            borderBottom: index === array.length - 1 || undefined,
+        }));
+    });
+
+    return {
+        results: finalResults,
+        groups: order.map((type, index) => results[type].length).filter(Boolean),
+        groupNames: order
+            .map((type, index) => (results[type].length ? `${type}s` : undefined))
+            .filter(Boolean),
+    };
 }

@@ -120,6 +120,10 @@ h6 {
     color: hsl(35, 100%, 50%);
 }
 
+.delay-warning {
+    color: hsl(60, 100%, 50%);
+}
+
 .delay-none {
     color: hsl(120, 73%, 65%);
 }
