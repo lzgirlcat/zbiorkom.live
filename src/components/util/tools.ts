@@ -130,20 +130,32 @@ export const getInitialViewState = (cityId: string) => {
     }
 }
 
-export const buildSearchView = (order: (keyof RawSearchResult)[], results: RawSearchResult): APISearch => {
-    const finalResults = order.flatMap((type, index) => {
-        return results[type].map((result, index, array) => ({
-            [type]: result,
+export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearchResult): APISearch => {
+    if (api.positions) {
+        api.vehicles = api.positions;
+        delete api["positions"];
+    }
+    const finalResults = order.flatMap((type) => {
+        const list = api[type] ?? []; // list of results for this type
+
+        return list.map((result, index) => ({
+            [type.replace(new RegExp("s" + '$'), '')]: result,
             borderTop: index === 0 || undefined,
-            borderBottom: index === array.length - 1 || undefined,
+            borderBottom: index === list.length - 1 || undefined,
         }));
     });
 
     return {
         results: finalResults,
-        groups: order.map((type, index) => results[type].length).filter(Boolean),
+
+        groups: order
+            .map((type) => api[type]?.length ?? 0)
+            .filter(Boolean),
+
         groupNames: order
-            .map((type, index) => (results[type].length ? `${type}s` : undefined))
+            .map((type) =>
+                api[type]?.length ? type : undefined
+            )
             .filter(Boolean),
     };
 }

@@ -504,6 +504,7 @@ declare global {
 }
 
 export type RawSearchResult = {
+    positions?: []
     routes: Route[];
     stops: [id: string, city: string, name: string][];
     stations: [id: string, city: string, name: string][];

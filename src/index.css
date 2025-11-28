@@ -124,6 +124,10 @@ h6 {
     color: hsl(60, 100%, 50%);
 }
 
+.delay-unset {
+    color: unset;
+}
+
 .delay-none {
     color: hsl(120, 73%, 65%);
 }

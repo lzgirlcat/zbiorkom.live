@@ -1,7 +1,7 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { APISearch, Route } from "typings";
+import { APISearch, RawSearchResult, Route } from "typings";
 import useFilterStore from "./useFilterStore";
 import { buildSearchView } from "@/util/tools";
 
@@ -15,12 +15,18 @@ export const useQuerySearch = ({ city, search }: { city: string; search?: string
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return getFromAPI<APISearch>(city, "search", { query: search, raw: true }, signal);
+            return getFromAPI<APISearch | RawSearchResult>(city, "search", { query: search, raw: true }, signal);
         },
         enabled: !!search,
         select: (data) => {
             if (data && !("groupNames" in data)) {
-                return buildSearchView(JSON.parse(localStorage.getItem("searchGroupOrdering") || '["vehicles", "stops", "stations", "routes", "relations"]'), data)
+                try {
+                    let search =  buildSearchView(JSON.parse(localStorage.getItem("searchGroupOrdering") || '["vehicles", "stops", "stations", "routes", "relations"]'), data);
+                    console.log(search)
+                    return search
+                } catch (e) {
+                    console.log(e)
+                }
             }
 
             return data;

@@ -35,14 +35,13 @@ export default ({
     const showOffGPS = delay === "scheduled" || showGPS === false;
 
     const swkClass = stopTimes
-        ? stopTimes[isLast ? 0 : 1][EStopTime.estimated] + 5 * 60 * 1000 < Date.now() &&
-          stopTimes[isLast ? 0 : 1][EStopTime.swk] !== StatusWpisuKontrolnego.Confirmed
-            ? "delay-warning"
-            : "delay-none"
+        ? stopTimes[isLast ? 0 : 1][EStopTime.swk] !== StatusWpisuKontrolnego.Confirmed
+            ? stopTimes[isLast ? 0 : 1][EStopTime.estimated] + 5 * 60 * 1000 < Date.now() ? "delay-warning" : "delay-unset"
+            : (stopTimes[0][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst) ? "delay-unset" : "delay-none"
         : "";
-    const swkIcon = hasSwk && delay !== "scheduled" ? (
+    const swkIcon = hasSwk && stopTimes[isLast ? 0 : 1][EStopTime.estimated] < Date.now() && delay !== "scheduled" ? (
             stopTimes[0][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst ? (
-                stopTimes[1][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isLast ? (
+                stopTimes[1][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst || isLast ? (
                     <DoneAll fontSize="small" className={swkClass} />
                 ) : (
                     <Done fontSize="small" className={swkClass} />
