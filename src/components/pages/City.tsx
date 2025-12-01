@@ -35,14 +35,6 @@ export default () => {
                 <StarOutline />
             </Fab>
 
-            <Fab
-                color="primary"
-                sx={{ position: "absolute", right: 16, top: 16 * 13}}
-                size="small"
-                onClick={() => navigate(`/${city}/directions`)}
-            >
-                <DirectionsOutlined />
-            </Fab>
 
             <Fab
                 sx={{ position: "absolute", right: 16, top: 16 * 10 }}
@@ -55,7 +47,7 @@ export default () => {
 
             <Fab
                 color="primary"
-                sx={{ position: "absolute", right: 16, top: 16 * 13, opacity: 0 }}
+                sx={{ position: "absolute", right: 16, top: 16 * 13}}
                 size="small"
                 onClick={() => navigate(`/${city}/directions`)}
             >
@@ -68,7 +60,7 @@ export default () => {
                     sx={{
                         position: "absolute",
                         right: 16,
-                        top: 16 * 14,
+                        top: 16 * 16,
                         "& .MuiBadge-badge": {
                             fontSize: 10,
                             minWidth: 16,
