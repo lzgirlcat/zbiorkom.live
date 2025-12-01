@@ -53,14 +53,14 @@ export default () => {
                 <LayersOutlined />
             </Fab>
 
-            {/* <Fab
+            <Fab
                 color="primary"
                 sx={{ position: "absolute", right: 16, top: 16 * 13, opacity: 0 }}
                 size="small"
                 onClick={() => navigate(`/${city}/directions`)}
             >
                 <DirectionsOutlined />
-            </Fab> */}
+            </Fab>
 
             {hasChristmasVehicles && (
                 <Badge
