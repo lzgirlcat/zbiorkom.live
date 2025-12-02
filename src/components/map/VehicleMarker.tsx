@@ -4,6 +4,7 @@ import { Marker } from "@vis.gl/react-maplibre";
 import { ERoute, EVehicle, Vehicle } from "typings";
 import { useChristmasStore } from "@/hooks/useChristmasVehicles";
 import { VehicleSnow } from "@/ui/ChristmasDecorations";
+import { useParams } from "react-router-dom";
 
 type Props = {
     vehicle: Vehicle;
@@ -12,10 +13,17 @@ type Props = {
     onClick?: () => void;
 };
 
+const VehicleEmotes: Record<string, string> = {
+    "bialystok808": "💩",
+    "bialystok263": "🏎️",
+}
+
 export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
     // const showBrigade = localStorage.getItem("brigade") === "true";
     // const showFleet = localStorage.getItem("fleet") === "true";
+    const city = useParams().city;
     const fleetId = vehicle[EVehicle.id].split("/")[1];
+    const emoteKey = city + fleetId
     const isChristmasVehicle = useChristmasStore((state) => state.isChristmasVehicle(vehicle[EVehicle.id]));
 
     return (
@@ -66,6 +74,7 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
                 <span>
                     {showBrigade && vehicle[EVehicle.brigade] ? `/${vehicle[EVehicle.brigade]}` : ""}
                     {showFleet && !fleetId.startsWith("_") ? `/${fleetId}` : ""}
+                    {showFleet && VehicleEmotes[emoteKey] ? VehicleEmotes[emoteKey] : ""}
                 </span>
             </div>
         </Marker>
