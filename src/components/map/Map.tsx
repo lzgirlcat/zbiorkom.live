@@ -1,6 +1,6 @@
 import { mapStyles } from "./mapStyle";
-import { memo, ReactElement, useEffect, useMemo } from "react";
-import { Map } from "@vis.gl/react-maplibre";
+import { memo, ReactElement, useEffect, useMemo, useRef } from "react";
+import { Map, MapRef } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
 import cities from "cities";
 import { useMapStyleStore } from "@/hooks/useMapStyleStore";
@@ -11,6 +11,7 @@ import { getInitialViewState } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
+    const mapRef = useRef<MapRef | null>(null);
     const [selectedStyle, basicAppearance] = useMapStyleStore(
         useShallow((state) => [state.selectedStyle, state.basicAppearance]),
     );
@@ -43,6 +44,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                     localStorage.setItem(`lastFocusedLocation.${cityId}`, JSON.stringify([e.viewState.longitude, e.viewState.latitude, e.viewState.zoom]));
                 }
             }}
+            ref={mapRef}
             onLoad={({ target }: { target: any }) => {
                 target.touchZoomRotate.disableRotation();
 
@@ -55,6 +57,9 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                         });
                     }
                 });
+                window.addEventListener("reloadMapSource", () => {
+                    mapRef.current?.redraw();
+                })
             }}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}

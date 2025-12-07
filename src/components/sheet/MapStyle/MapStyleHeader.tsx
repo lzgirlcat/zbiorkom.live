@@ -1,5 +1,5 @@
 import useGoBack from "@/hooks/useGoBack";
-import { Close, Layers } from "@mui/icons-material";
+import { Close, Layers, RestartAlt } from "@mui/icons-material";
 import { Box, IconButton, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -60,6 +60,9 @@ export default () => {
                     },
                 }}
             >
+                <IconButton size="small" onClick={() => window.dispatchEvent(new CustomEvent("reloadMapSource"))}>
+                    <RestartAlt />
+                </IconButton>
                 <IconButton size="small" onClick={() => goBack()}>
                     <Close />
                 </IconButton>
