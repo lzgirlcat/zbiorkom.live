@@ -28,7 +28,7 @@ export default () => {
                 gap: 1,
                 padding: 1,
                 height: "calc(var(--rsbs-overlay-h) - 55px)",
-                overflowY: "auto",
+                // overflowY: "auto",
             }}
         >
             <Box
