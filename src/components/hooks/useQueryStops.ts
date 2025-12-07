@@ -3,6 +3,7 @@ import useStopStore from "./useStopStore";
 import { getFromAPI } from "@/util/fetchFunctions";
 import { Stop, StopDepartures, StopDirection } from "typings";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type StopDeparturesQueryProps = {
     stop: string;
@@ -19,7 +20,9 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
     const queryClient = useQueryClient();
     const queryKey = ["stop", props.stop, props.destinations];
 
+    const [params, setSearchParams] = useSearchParams()
     const limit = props.limit || stopStore.limit;
+    if (!stopStore.time && params.get("t") && params.get("t") !== null) stopStore.setTime(+params.get("t"))
     const time = props.time || stopStore.time;
     const destinations = props.destinations?.join(",") || stopStore.destination;
 

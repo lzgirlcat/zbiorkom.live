@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import useGoBack from "@/hooks/useGoBack";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {
     value: number; // timestamp
@@ -102,6 +103,8 @@ const TimeField = ({ type, value, setValue, prevValue, setPrevValue, save }: Tim
 export default ({ value, onChange }: Props) => {
     const date = new Date(value);
 
+    const navigate = useNavigate()
+    const location = useLocation()
     const [hours, setHours] = useState<string>(String(date.getHours()).padStart(2, "0"));
     const [minutes, setMinutes] = useState<string>(String(date.getMinutes()).padStart(2, "0"));
     const [prevHoursString, setPrevHoursString] = useState<string>(hours);
@@ -116,11 +119,17 @@ export default ({ value, onChange }: Props) => {
     const nextHour = parsedHours + 1;
     const previousHour = parsedHours - 1;
 
-    const displaySuggestions = !navigator.userAgent.includes("iPhone");
+    const displaySuggestions = !navigator.userAgent.toLowerCase().includes("iphone");
 
     const save = () => {
-        onChange(new Date(date).setHours(parsedHours, parseInt(minutes) || 0));
-        goBack();
+        const t = new Date(date).setHours(parsedHours, parseInt(minutes) || 0)
+        onChange(t);
+        const s = new URLSearchParams(location.search)
+        s.set("t", t.toString())
+        navigate({
+            "pathname": "/" + location.pathname.split("/").filter(Boolean).slice(0, -1).join("/"),
+            "search": s.toString()
+        })
     };
 
     useEffect(() => {
