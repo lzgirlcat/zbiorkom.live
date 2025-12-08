@@ -119,7 +119,7 @@ export const mapStyles = {
         attribution: ['&copy; <a href="https://geoportal.gov.pl" target="_blank">Geoportal</a>'],
     },
     geoportalHiRes: {
-        name: "Geoportal High Res",
+        name: "Geoportal HiRes",
         style: geoportalHiResStyle,
         attribution: ['&copy; <a href="https://geoportal.gov.pl" target="_blank">Geoportal</a>'],
     },

@@ -58,7 +58,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                     }
                 });
                 window.addEventListener("reloadMapSource", () => {
-                    mapRef.current?.redraw();
+                    Object.entries(mapRef.current?.getMap().style.tileManagers).forEach(([k, v]) => v.reload(true));
                 })
             }}
             style={{ position: "absolute" }}

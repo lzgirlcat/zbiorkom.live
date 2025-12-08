@@ -43,7 +43,7 @@ export default () => {
                         flexDirection: "column",
                         alignItems: "center",
                         borderRadius: 1,
-                        padding: 1,
+                        padding: 0.95,
                         gap: 1,
                         transition: "background-color 0.2s, color 0.2s, font-weight 0.2s",
                         "&:hover": { backgroundColor: "action.hover" },
