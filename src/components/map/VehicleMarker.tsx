@@ -14,7 +14,7 @@ type Props = {
 };
 
 const VehicleEmotes: Record<string, string> = {
-    "bialystok808": "💩",
+    // "bialystok808": "💩",
     "bialystok263": "🏎️",
 }
 
