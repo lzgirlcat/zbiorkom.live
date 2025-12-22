@@ -17,14 +17,14 @@ export default () => {
     useEffect(() => {
         const lastSeenAlert = JSON.parse(localStorage.getItem("lastSeenAlert") || "0");
 
-        fetch(`https://re61.2137.workers.dev/${city}`)
-            .then((res) => res.json() as Promise<Alert | null>)
-            .then((res) => {
-                if (!res || (res.closeable && res.published <= lastSeenAlert)) return;
+        // fetch(`https://re61.2137.workers.dev/${city}`)
+        //     .then((res) => res.json() as Promise<Alert | null>)
+        //     .then((res) => {
+        //         if (!res || (res.closeable && res.published <= lastSeenAlert)) return;
 
-                setAlert(res);
-                localStorage.setItem("lastSeenAlert", res.published.toString());
-            });
+        //         setAlert(res);
+        //         localStorage.setItem("lastSeenAlert", res.published.toString());
+        //     });
     }, []);
 
     if (!alert) return null;
