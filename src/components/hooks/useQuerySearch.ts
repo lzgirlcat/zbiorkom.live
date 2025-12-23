@@ -15,17 +15,28 @@ export const useQuerySearch = ({ city, search }: { city: string; search?: string
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            return getFromAPI<APISearch | RawSearchResult>(city, "search", { query: search, raw: true }, signal);
+            return getFromAPI<APISearch | RawSearchResult>(
+                city,
+                "search",
+                { query: search, raw: true },
+                signal,
+            );
         },
         enabled: !!search,
         select: (data) => {
             if (data && !("groupNames" in data)) {
                 try {
-                    let search =  buildSearchView(JSON.parse(localStorage.getItem("searchGroupOrdering") || '["vehicles", "stops", "stations", "routes", "relations"]'), data);
-                    console.log(search)
-                    return search
+                    let resp = buildSearchView(
+                        JSON.parse(
+                            localStorage.getItem("searchGroupOrdering") ||
+                                '["vehicles", "stops", "stations", "routes", "relations"]',
+                        ),
+                        data,
+                        search
+                    );
+                    return resp;
                 } catch (e) {
-                    console.log(e)
+                    console.log(e);
                 }
             }
 

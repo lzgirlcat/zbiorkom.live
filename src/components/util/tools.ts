@@ -1,4 +1,4 @@
-import { DelayType, RawSearchResult, APISearch } from "typings";
+import { DelayType, RawSearchResult, APISearch, ESearchRelation } from "typings";
 import cities from "cities";
 
 export const getTime = (time: number) => {
@@ -130,10 +130,19 @@ export const getInitialViewState = (cityId: string) => {
     }
 }
 
-export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearchResult): APISearch => {
+export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearchResult, search?: string): APISearch => {
     if (api.positions) {
         api.vehicles = api.positions;
         delete api["positions"];
+    }
+    if (api.relations) {
+        const index = api.relations.findIndex(
+            i => i[ESearchRelation.shortName] === search || i[ESearchRelation.shortName].split(" ")[0] === search
+        );
+
+        if (index > 0) {
+            api.relations.unshift(api.relations.splice(index, 1)[0]);
+        }
     }
     const finalResults = order.flatMap((type) => {
         const list = api[type] ?? []; // list of results for this type
