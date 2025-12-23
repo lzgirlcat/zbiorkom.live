@@ -8,7 +8,7 @@ import Alert from "@/ui/Alert";
 import { Location } from "typings";
 
 export default () => {
-    const favorites = useFavStore((state) => state.favorites);
+    const favorites = JSON.parse(localStorage.getItem(`${window.location.pathname.split("/")[1]}.favs`) || "[]");
     const { t } = useTranslation("Favorites");
 
     const sortedFavorites = useMemo(() => {
