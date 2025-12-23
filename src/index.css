@@ -166,6 +166,15 @@ h6 {
     top: -30px;
     left: 16px;
     width: 16px;
+    height: 95%;
+    pointer-events: none;
+}
+
+.vehicleStopIconLineLastDelayed {
+    position: absolute;
+    top: -30px;
+    left: 16px;
+    width: 16px;
     height: 90%;
     pointer-events: none;
 }

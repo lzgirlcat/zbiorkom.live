@@ -9,9 +9,10 @@ type Props = {
     type: VehicleType;
     percentTraveled?: number;
     lineMargin?: number;
+    delayed?: boolean;
 };
 
-export default ({ color: [color, text, background], first, last, type, percentTraveled, lineMargin }: Props) => {
+export default ({ color: [color, text, background], first, last, type, percentTraveled, lineMargin, delayed = false}: Props) => {
     return (
         <>
             <span
@@ -21,7 +22,7 @@ export default ({ color: [color, text, background], first, last, type, percentTr
                 }}
             />
             <span
-                className={last ? "vehicleStopIconLineLast": first ? "vehicleStopIconLineFirst" : "vehicleStopIconLine"}
+                className={last ? (delayed ? "vehicleStopIconLineLastDelayed" :"vehicleStopIconLineLast"): first ? "vehicleStopIconLineFirst" : "vehicleStopIconLine"}
                 style={{
                     backgroundColor: color,
                     marginLeft: lineMargin,

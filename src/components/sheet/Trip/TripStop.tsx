@@ -20,6 +20,7 @@ import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
 import { useNavigate, useParams } from "react-router-dom";
+import { getDelay } from "@/util/tools";
 
 type Props = {
     vehicle?: Vehicle;
@@ -91,6 +92,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                               : undefined
                     }
                     lineMargin={(JSON.parse(localStorage.getItem("showSeconds") || "false")) ? 57.5 : 41}
+                    delayed={["early", "delayed"].includes(getDelay(delay)[0])}
                 />
             </ListItemIcon>
 
