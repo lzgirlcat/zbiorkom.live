@@ -6,7 +6,7 @@ export const getTime = (time: number) => {
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
-        second: (JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined)
+        second: JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined,
     });
 };
 
@@ -27,20 +27,17 @@ export const msToTime = (ms: number, withSeconds?: boolean) => {
 
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
 
-    const remainingMinutes = minutes % 60;
     const remainingSeconds = seconds % 60;
 
-    if (hours > 0) formattedTime+=`${hours}h`;
-    if (remainingMinutes > 0) formattedTime +=`${remainingMinutes}`;
-    if (remainingMinutes > 0) {
-        if (hours == 0 && !withSeconds) {
-            formattedTime+= " min";
-        } else if (withSeconds) formattedTime += "m";
+    if (minutes > 0) formattedTime += `${minutes}`;
+    if (minutes > 0) {
+        if (!withSeconds) {
+            formattedTime += " min";
+        } else formattedTime += "m";
     }
-    if (withSeconds) formattedTime +=`${remainingSeconds} s`;
-    return formattedTime
+    if (withSeconds) formattedTime += `${remainingSeconds} s`;
+    return formattedTime;
 };
 
 export const polylineToGeoJson = (polyline: string) => {
@@ -100,7 +97,6 @@ export const share = (url: string) => {
     }
 };
 
-
 export const getInitialViewState = (cityId: string) => {
     const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
     const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
@@ -128,16 +124,22 @@ export const getInitialViewState = (cityId: string) => {
             zoom,
         };
     }
-}
+};
 
-export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearchResult, search?: string): APISearch => {
+export const buildSearchView = (
+    order: (keyof RawSearchResult)[],
+    api: RawSearchResult,
+    search?: string,
+): APISearch => {
     if (api.positions) {
         api.vehicles = api.positions;
         delete api["positions"];
     }
     if (api.relations) {
         const index = api.relations.findIndex(
-            i => i[ESearchRelation.shortName] === search || i[ESearchRelation.shortName].split(" ")[0] === search
+            (i) =>
+                i[ESearchRelation.shortName] === search ||
+                i[ESearchRelation.shortName].split(" ")[0] === search,
         );
 
         if (index > 0) {
@@ -148,7 +150,7 @@ export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearch
         const list = api[type] ?? []; // list of results for this type
 
         return list.map((result, index) => ({
-            [type.replace(new RegExp("s" + '$'), '')]: result,
+            [type.replace(new RegExp("s" + "$"), "")]: result,
             borderTop: index === 0 || undefined,
             borderBottom: index === list.length - 1 || undefined,
         }));
@@ -157,14 +159,8 @@ export const buildSearchView = (order: (keyof RawSearchResult)[], api: RawSearch
     return {
         results: finalResults,
 
-        groups: order
-            .map((type) => api[type]?.length ?? 0)
-            .filter(Boolean),
+        groups: order.map((type) => api[type]?.length ?? 0).filter(Boolean),
 
-        groupNames: order
-            .map((type) =>
-                api[type]?.length ? type : undefined
-            )
-            .filter(Boolean),
+        groupNames: order.map((type) => (api[type]?.length ? type : undefined)).filter(Boolean),
     };
-}
+};

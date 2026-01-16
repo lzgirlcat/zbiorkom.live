@@ -144,7 +144,8 @@
         "clearSettings": "Restore Defaults",
         "searchGroupOrdering": "Search order",
         "rememberLastFocusedLocation": "Remember the last focused map position",
-        "disableLiquidGlass": "Disable liquid glass effect"
+        "disableLiquidGlass": "Disable liquid glass effect",
+        "autoScrollToBrigade": "Automatically scroll to the current trip of the brigade"
     },
     "Languages": {
         "en": "English",
@@ -206,7 +207,6 @@
         "enterTime": "Enter time",
         "hour": "Hour",
         "minute": "Minute",
-        "nextDay": "You will see the schedule for the next day from {{time}}",
         "cancel": "Cancel",
         "save": "OK"
     },

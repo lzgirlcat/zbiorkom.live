@@ -38,18 +38,23 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
         vehicleId ? state.isChristmasVehicle(vehicleId) : false,
     );
 
+    const path =
+        [
+            city,
+            vehicle ? "vehicle" : "trip",
+            encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
+        ].join("/") + (isStation ? "?pkp" : "");
+
+    function goTo() {
+        navigate(path);
+    }
     return (
         <ListItemButton
-            onDoubleClick={() => {
-                navigate(
-                    [
-                        city,
-                        vehicle ? "vehicle" : "trip",
-                        encodeURIComponent(vehicle ? vehicle[EVehicle.id] : departure[EStopDeparture.id]),
-                    ].join("/") + (isStation ? "?pkp" : ""),
-                );
+            onDoubleClick={() => goTo()}
+            onClick={(e) => {
+                e.preventDefault();
+                vehicle ? goTo() : setExpanded(!isExpanded);
             }}
-            onClick={() => setExpanded(!isExpanded)}
             className={isChristmasVehicle ? "departure-snow" : undefined}
             sx={{
                 display: "flex",
@@ -66,6 +71,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 },
                 opacity: isCancelled ? 0.7 : undefined,
             }}
+            href={window.location.origin + path}
         >
             <ListItemText
                 primary={
@@ -114,7 +120,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                             )}
                         </Box>
 
-                        {showCountdown && <span>{useSeconds? "sec": "min"}</span>}
+                        {showCountdown && <span>{useSeconds ? "sec" : "min"}</span>}
                     </>
                 }
                 primaryTypographyProps={{

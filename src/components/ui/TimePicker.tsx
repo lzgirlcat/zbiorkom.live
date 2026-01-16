@@ -12,288 +12,189 @@ import { useState, useEffect } from "react";
 import useGoBack from "@/hooks/useGoBack";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
 type Props = {
-    value: number; // timestamp
+    value: number; // full timestamp
     onChange: (value: number) => void;
 };
 
-type TimeFieldProps = {
-    type: "hours" | "minutes";
+const TimeField = ({
+    value,
+    onChange,
+    label,
+    min,
+    max,
+}: {
     value: string;
-    setValue: (value: string) => void;
-    prevValue: string;
-    setPrevValue: (value: string) => void;
-    save: () => void;
-};
-
-const TimeField = ({ type, value, setValue, prevValue, setPrevValue, save }: TimeFieldProps) => {
-    const { t } = useTranslation("Time");
-
-    const handleBlur = (val: string) => {
-        if (val === "") {
-            setValue(prevValue);
-        } else {
-            const formattedValue = val.padStart(2, "0");
-            setValue(formattedValue);
-            setPrevValue(formattedValue);
-        }
-    };
-
-    return (
-        <TextField
-            id={`field${type}`}
-            type="number"
-            value={value}
-            onChange={(e) => {
-                const value = e.target.value;
-
-                if (!value) return setValue("");
-
-                if (type === "hours" && (value.length === 2 || !["0", "1", "2"].includes(value))) {
-                    handleBlur(value);
-                    document.getElementById("fieldminutes")?.focus();
-                } else if (type === "minutes" && !["0", "1", "2", "3", "4", "5"].includes(value)) {
-                    handleBlur(value);
-                    document.getElementById("fieldminutes")?.blur();
-                } else {
-                    setValue(value);
-                }
-            }}
-            onKeyDown={(e) => {
-                if (e.key === "Backspace" && value === "" && type === "minutes") {
-                    document.getElementById("fieldhours")?.focus();
-                    setValue("00");
-                    setPrevValue("00");
-                }
-            }}
-            onFocus={() => setValue("")}
-            onBlur={(e) => handleBlur(e.target.value)}
-            onWheel={(e: any) => e.target.blur()}
-            autoComplete="off"
-            slotProps={{
-                htmlInput: {
-                    min: 0,
-                    max: type === "hours" ? 23 : 59,
-                    step: 1,
-                    inputMode: "numeric",
-                    pattern: "[0-9]*",
-                },
-            }}
-            helperText={t(type === "hours" ? "hour" : "minute")}
-            sx={{
-                width: 72,
-                height: 72,
-                "& .MuiInputBase-root": {
-                    borderRadius: 1,
-                    "& input": {
-                        padding: 1,
-                        textAlign: "center",
-                        fontSize: 24,
-                    },
-                },
-                "& .MuiFormHelperText-root": {
-                    marginLeft: 0.5,
-                },
-            }}
-        />
-    );
-};
+    onChange: (value: string) => void;
+    label: string;
+    min: number;
+    max: number;
+}) => (
+    <TextField
+        type="number"
+        value={value}
+        onChange={(e) => {
+            const val = e.target.value;
+            if (!val) return onChange("");
+            if (val.length === 2 || (parseInt(val) >= min && parseInt(val) > max)) {
+                onChange(val.padStart(2, "0"));
+            } else {
+                onChange(val);
+            }
+        }}
+        onFocus={() => onChange("")}
+        onBlur={(e) => {
+            let val = e.target.value || "00";
+            val = Math.max(min, Math.min(max, parseInt(val) || min))
+                .toString()
+                .padStart(2, "0");
+            onChange(val);
+        }}
+        slotProps={{
+            htmlInput: { min, max, step: 1, inputMode: "numeric", pattern: "[0-9]*" },
+        }}
+        helperText={label}
+        sx={{
+            width: 72,
+            height: 72,
+            "& .MuiInputBase-root": {
+                borderRadius: 1,
+                "& input": { padding: 1, textAlign: "center", fontSize: 24 },
+            },
+        }}
+    />
+);
 
 export default ({ value, onChange }: Props) => {
-    const date = new Date(value);
+    const [timestamp, setTimestamp] = useState(value);
+    const date = new Date(timestamp);
 
-    const navigate = useNavigate()
-    const location = useLocation()
-    const [hours, setHours] = useState<string>(String(date.getHours()).padStart(2, "0"));
-    const [minutes, setMinutes] = useState<string>(String(date.getMinutes()).padStart(2, "0"));
-    const [prevHoursString, setPrevHoursString] = useState<string>(hours);
-    const [prevMinutesString, setPrevMinutesString] = useState<string>(minutes);
-
+    const navigate = useNavigate();
+    const location = useLocation();
     const { t } = useTranslation("Time");
     const goBack = useGoBack();
 
-    const parsedHours = parseInt(hours);
-    const parsedMinutes = parseInt(minutes);
+    const updateTime = (hours: number, minutes: number) => {
+        const newDate = new Date(timestamp);
+        newDate.setHours(hours, minutes, 0, 0);
+        setTimestamp(newDate.getTime());
+    };
 
-    const nextHour = parsedHours + 1;
-    const previousHour = parsedHours - 1;
-
-    const displaySuggestions = !navigator.userAgent.toLowerCase().includes("iphone");
+    const changeDate = (days: number) => {
+        const newDate = new Date(timestamp);
+        newDate.setDate(newDate.getDate() + days);
+        setTimestamp(newDate.getTime());
+    };
 
     const save = () => {
-        const t = new Date(date).setHours(parsedHours, parseInt(minutes) || 0)
-        onChange(t);
-        const s = new URLSearchParams(location.search)
-        s.set("t", t.toString())
+        onChange(timestamp);
+        const s = new URLSearchParams(location.search);
+        s.set("t", timestamp.toString());
         navigate({
-            "pathname": "/" + location.pathname.split("/").filter(Boolean).slice(0, -1).join("/"),
-            "search": s.toString()
-        })
+            pathname: "/" + location.pathname.split("/").filter(Boolean).slice(0, -1).join("/"),
+            search: s.toString(),
+        });
     };
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Enter") {
-                save();
-            } else if (e.key.match(/[0-9]/) && !document.activeElement?.id.includes("field")) {
-                document.getElementById("fieldhours")?.focus();
-            }
+            if (e.key === "Enter") save();
         };
-
         document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [hours, minutes]);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [timestamp]);
 
     return (
-        <Dialog open fullWidth onClose={() => goBack()}>
+        <Dialog open fullWidth onClose={goBack}>
             <DialogTitle sx={{ paddingLeft: 3, paddingTop: 2 }}>{t("enterTime")}</DialogTitle>
+
             <DialogContent
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 2,
-                    padding: 1,
-                }}
+                sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: 1 }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        "& span": {
-                            fontSize: 26,
-                            fontWeight: "bold",
-                            marginTop: -2.5,
-                        },
-                    }}
-                >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Button variant="outlined" size="small" onClick={() => changeDate(-1)}>
+                        <ArrowBack />
+                    </Button>
+                    <Typography variant="h6" sx={{ minWidth: 120, textAlign: "center" }}>
+                        {date.toLocaleDateString()}
+                    </Typography>
+                    <Button variant="outlined" size="small" onClick={() => changeDate(1)}>
+                        <ArrowForward />
+                    </Button>
+                </Box>
+
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <TimeField
-                        type="hours"
-                        value={hours}
-                        setValue={setHours}
-                        prevValue={prevHoursString}
-                        setPrevValue={setPrevHoursString}
-                        save={save}
+                        value={date.getHours().toString().padStart(2, "0")}
+                        onChange={(h) => updateTime(parseInt(h) || 0, date.getMinutes())}
+                        label={t("hour")}
+                        min={0}
+                        max={23}
                     />
-                    <span>:</span>
+                    <span style={{ fontSize: 26, fontWeight: "bold" }}>:</span>
                     <TimeField
-                        type="minutes"
-                        value={minutes}
-                        setValue={setMinutes}
-                        prevValue={prevMinutesString}
-                        setPrevValue={setPrevMinutesString}
-                        save={save}
+                        value={date.getMinutes().toString().padStart(2, "0")}
+                        onChange={(m) => updateTime(date.getHours(), parseInt(m) || 0)}
+                        label={t("minute")}
+                        min={0}
+                        max={59}
                     />
                 </Box>
 
-                {displaySuggestions && (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: 1,
-                            padding: 0.5,
-                            whiteSpace: "nowrap",
-                            overflow: "auto",
-                            maxWidth: "100%",
-                            "& .MuiButton-root": {
-                                backgroundColor: "background.paper",
-                                color: "text.primary",
-                                transition: "opacity 0.2s",
-                                "&:hover": {
-                                    backgroundColor: "background.paper",
-                                },
-                                "&:disabled": {
-                                    backgroundColor: "background.paper",
-                                    opacity: 0.7,
-                                },
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 1,
+                        padding: 0.5,
+                        whiteSpace: "nowrap",
+                        overflow: "auto",
+                        maxWidth: "100%",
+                        "& .MuiButton-root": {
+                            backgroundColor: "background.paper",
+                            color: "text.primary",
+                            transition: "opacity 0.2s",
+                            "&:hover": { backgroundColor: "background.paper" },
+                            "&:disabled": { backgroundColor: "background.paper", opacity: 0.7 },
+                        },
+                    }}
+                >
+                    {[
+                        {
+                            text: "-15 min",
+                            onClick: () => {
+                                const newMinutes = date.getMinutes() - 15;
+                                if (newMinutes < 0) {
+                                    updateTime(date.getHours() - 1, 60 + newMinutes);
+                                } else {
+                                    updateTime(date.getHours(), newMinutes);
+                                }
                             },
-                        }}
-                    >
-                        {[
-                            {
-                                text: "-15 min",
-                                onClick: () => {
-                                    const newMinutes = parsedMinutes - 15;
-
-                                    if (newMinutes < 0) {
-                                        const newHours = parsedHours - 1;
-                                        setHours(String(newHours).padStart(2, "0"));
-                                        setPrevHoursString(String(newHours).padStart(2, "0"));
-                                        setMinutes(String(60 + newMinutes).padStart(2, "0"));
-                                        setPrevMinutesString(String(60 + newMinutes).padStart(2, "0"));
-                                    } else {
-                                        setMinutes(String(newMinutes).padStart(2, "0"));
-                                        setPrevMinutesString(String(newMinutes).padStart(2, "0"));
-                                    }
-                                },
-                                disabled: () => parsedHours === 0 && parsedMinutes <= 15,
-                            },
-                            {
-                                text: "- 1h",
-                                onClick: () => {
-                                    setHours(String(previousHour).padStart(2, "0"));
-                                    setPrevHoursString(String(previousHour).padStart(2, "0"));
-                                },
-                                disabled: () => previousHour === -1,
-                            },
-                            {
-                                text: "+ 1h",
-                                onClick: () => {
-                                    setHours(String(nextHour).padStart(2, "0"));
-                                    setPrevHoursString(String(nextHour).padStart(2, "0"));
-                                },
-                                disabled: () => nextHour === 30,
-                            },
-                            ...["07", "15", "20"].map((hour) => ({
-                                text: `${hour}:00`,
-                                onClick: () => {
-                                    setHours(hour);
-                                    setPrevHoursString(hour);
-                                    setMinutes("00");
-                                    setPrevMinutesString("00");
-                                },
-                                disabled: () => hours === hour && minutes == "00",
-                            })),
-                            {
-                                text: "🌙",
-                                onClick: () => {
-                                    setHours("24");
-                                    setPrevHoursString("24");
-                                    setMinutes("00");
-                                    setPrevMinutesString("00");
-                                },
-                                disabled: () => hours === "24" && minutes === "00",
-                            },
-                        ].map((action) => (
-                            <Button
-                                key={action.text}
-                                variant="contained"
-                                onClick={action.onClick}
-                                disabled={action.disabled()}
-                            >
-                                {action.text}
-                            </Button>
-                        ))}
-                    </Box>
-                )}
-                {parsedHours >= 24 && (
-                    <Typography
-                        sx={{ color: "text.disabled", fontSize: 12, textAlign: "center", padding: 0 }}
-                    >
-                        {t("nextDay", {
-                            time: `${String(parsedHours % 24).padStart(2, "0")}:${minutes.padStart(2, "0")}`,
-                        })}
-                    </Typography>
-                )}
+                        },
+                        {
+                            text: "- 1h",
+                            onClick: () => updateTime(Math.max(0, date.getHours() - 1), date.getMinutes()),
+                        },
+                        {
+                            text: "+ 1h",
+                            onClick: () => updateTime(Math.min(23, date.getHours() + 1), date.getMinutes()),
+                        },
+                        ...["07", "15", "20"].map((hour) => ({
+                            text: `${hour}:00`,
+                            onClick: () => updateTime(parseInt(hour), 0),
+                        })),
+                    ].map(({ text, onClick }) => (
+                        <Button key={text} variant="contained" onClick={onClick}>
+                            {text}
+                        </Button>
+                    ))}
+                </Box>
             </DialogContent>
+
             <DialogActions sx={{ paddingRight: 3, paddingBottom: 2 }}>
-                <Button onClick={() => goBack()}>{t("cancel")}</Button>
+                <Button onClick={goBack}>{t("cancel")}</Button>
                 <Button onClick={save}>{t("save")}</Button>
             </DialogActions>
         </Dialog>
