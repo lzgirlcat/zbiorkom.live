@@ -85,6 +85,7 @@ export default ({ value, onChange }: Props) => {
     const changeDate = (days: number) => {
         const newDate = new Date(timestamp);
         newDate.setDate(newDate.getDate() + days);
+
         setTimestamp(newDate.getTime());
     };
 
@@ -113,19 +114,69 @@ export default ({ value, onChange }: Props) => {
             <DialogContent
                 sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: 1 }}
             >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Button variant="outlined" size="small" onClick={() => changeDate(-1)}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        "& .MuiButton-root": {
+                            backgroundColor: "background.paper",
+                            color: "text.primary",
+                            transition: "opacity 0.2s",
+                            "&:hover": { backgroundColor: "background.paper" },
+                            "&:disabled": { backgroundColor: "background.paper", opacity: 0.7 },
+                        },
+                    }}
+                >
+                    <Button
+                        size="small"
+                        sx={{
+                            "& .MuiButton-root": {
+                                backgroundColor: "background.paper",
+                                color: "text.primary",
+                                transition: "opacity 0.2s",
+                                "&:hover": { backgroundColor: "background.paper" },
+                                "&:disabled": { backgroundColor: "background.paper", opacity: 0.7 },
+                            },
+                        }}
+                        onClick={() => changeDate(-1)}
+                        disabled={((timestamp - (new Date()).getTime())) / (1000 * 60 * 60 * 24) < -1}
+                    >
                         <ArrowBack />
                     </Button>
                     <Typography variant="h6" sx={{ minWidth: 120, textAlign: "center" }}>
                         {date.toLocaleDateString()}
                     </Typography>
-                    <Button variant="outlined" size="small" onClick={() => changeDate(1)}>
+                    <Button
+                        size="small"
+                        onClick={() => changeDate(1)}
+                        sx={{
+                            "& .MuiButton-root": {
+                                backgroundColor: "background.paper",
+                                color: "text.primary",
+                                transition: "opacity 0.2s",
+                                "&:hover": { backgroundColor: "background.paper" },
+                                "&:disabled": { backgroundColor: "background.paper", opacity: 0.7 },
+                            },
+                        }}
+                        disabled={((timestamp - (new Date()).getTime())) / (1000 * 60 * 60 * 24) > 6}
+                    >
                         <ArrowForward />
                     </Button>
                 </Box>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                 <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        "& span": {
+                            fontSize: 26,
+                            fontWeight: "bold",
+                            marginTop: -2.5,
+                        },
+                    }}
+                >
                     <TimeField
                         value={date.getHours().toString().padStart(2, "0")}
                         onChange={(h) => updateTime(parseInt(h) || 0, date.getMinutes())}
