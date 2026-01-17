@@ -379,7 +379,11 @@ export default () => {
         },
         {
             path: "*",
-            loader: () => redirect("/"),
+            element: (
+                <Suspense>
+                    <Error />
+                </Suspense>
+            ),
         },
     ]);
 
