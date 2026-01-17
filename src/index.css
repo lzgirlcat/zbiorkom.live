@@ -2,9 +2,6 @@
     transition: all 0.2s ease-in-out;
 }
 
-/* Import świątecznych styli */
-@import "./components/pages/Christmas/christmas.css";
-
 .map-dark .maplibregl-map {
     background-color: #1a1f26;
 }

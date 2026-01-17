@@ -34,8 +34,8 @@ export const geoportalStandardStyle = rasterStyle(
     ["https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution?service=WMS&request=GetMap&layers=Raster&styles=&format=image%2Fjpeg&transparent=false&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox={bbox-epsg-3857}"]
 )
 
-export const mapboxSatelliteStyle = rasterStyle(
-    ["https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiemJpb3Jrb21saXZlIiwiYSI6ImNtZnNwbTVpZDA3YmEya3F2MTJkaW90eDAifQ.erqF5nTfk6StoSOU6wEsoQ"],
+export const esriSatelliteStyle = rasterStyle(
+    ["https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}?blankTile=false"]
 );
 
 export const geoportalHiResStyle = rasterStyle(
@@ -108,10 +108,10 @@ export const mapStyles = {
         ],
         supportsDark: true,
     },
-    mapboxSatellite: {
-        name: "Mapbox Satellite",
-        style: mapboxSatelliteStyle,
-        attribution: ['&copy; <a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a>'],
+    googleSatellite: {
+        name: "Esri Satellite",
+        style: esriSatelliteStyle,
+        attribution: ['&copy; <a href="https://www.esri.com" target="_blank">Esri</a>'],
     },
     geoportalStandard: {
         name: "Geoportal",

@@ -13,11 +13,11 @@ const cities: Record<string, City> = {
         description: "+ Wschód Express, Turośń Kościelna",
         location: [23.16319, 53.13488],
     },
-     czestochowa: {
+    czestochowa: {
         id: "czestochowa",
         name: "Częstochowa",
+        location: [19.118346, 50.811894],
         showNewTag: true,
-        location: [19.119809, 50.808673],
     },
     elblag: {
         id: "elblag",

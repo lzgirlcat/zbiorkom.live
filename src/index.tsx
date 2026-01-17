@@ -7,7 +7,6 @@ import App from "./App";
 import "./components/util/register";
 import "./components/sheet/sheet.css";
 import "./index.css";
-import "./components/pages/Christmas/christmas.css";
 
 const queryClient = new QueryClient({
     defaultOptions: {
