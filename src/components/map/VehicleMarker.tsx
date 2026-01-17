@@ -2,8 +2,6 @@ import { ArrowUpward } from "@mui/icons-material";
 import Icon from "@/ui/Icon";
 import { Marker } from "@vis.gl/react-maplibre";
 import { ERoute, EVehicle, Vehicle } from "typings";
-import { useChristmasStore } from "@/hooks/useChristmasVehicles";
-import { VehicleSnow } from "@/ui/ChristmasDecorations";
 import { useParams } from "react-router-dom";
 
 type Props = {
@@ -24,36 +22,22 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
     const city = useParams().city;
     const fleetId = vehicle[EVehicle.id].split("/")[1];
     const emoteKey = city + fleetId
-    const isChristmasVehicle = useChristmasStore((state) => state.isChristmasVehicle(vehicle[EVehicle.id]));
 
     return (
         <Marker
             longitude={vehicle[EVehicle.location][0]}
             latitude={vehicle[EVehicle.location][1]}
-            style={{ zIndex: isChristmasVehicle ? 5 : 3 }}
+            style={{ zIndex: 3 }}
             onClick={onClick}
         >
             <div
-                className={`vehicle marker ${isChristmasVehicle ? "christmas-vehicle" : ""}`}
+                className={`vehicle marker`}
                 style={{
                     background: vehicle[EVehicle.route][ERoute.color],
                     position: "relative",
                     overflow: "visible",
-                    transform: isChristmasVehicle ? "scale(1.07)" : undefined,
                 }}
             >
-                {/* Śnieg na pojeździe */}
-                {isChristmasVehicle && <VehicleSnow />}
-                {/* {vehicle.emoji && (
-                    <span
-                        className="emoji"
-                        style={{ background: vehicle.background || vehicle.route.color }}
-                        dangerouslySetInnerHTML={{
-                            __html: vehicle.emoji,
-                        }}
-                    />
-                )} */}
-
                 {vehicle[EVehicle.bearing] !== null && (
                     <ArrowUpward
                         sx={{
