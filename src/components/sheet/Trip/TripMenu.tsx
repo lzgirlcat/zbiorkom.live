@@ -94,7 +94,21 @@ export default () => {
                 )}
                 {trip && trip[ETrip.route][ERoute.type] == 2 && trip[ETrip.route][ERoute.agency] == "IC" && (
                     <MenuItem
-                        onClick={() => window.open("https://bocznica.eu/stats/" + trip[ETrip.shortName].split(" ")[0], "_blank")}
+                        onClick={(e) => {
+                            if (
+                                e.defaultPrevented ||
+                                e.button !== 0 ||
+                                e.metaKey ||
+                                e.ctrlKey ||
+                                e.shiftKey ||
+                                e.altKey
+                            ) {
+                                return;
+                            }
+                            e.preventDefault();
+                            window.open("https://bocznica.eu/stats/" + trip[ETrip.shortName].split(" ")[0], "_blank");
+                        }}
+                        href={"https://bocznica.eu/stats/" + trip[ETrip.shortName].split(" ")[0]}
                     >
                         <ListItemIcon>
                             <Train fontSize="small" />

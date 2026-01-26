@@ -1,5 +1,5 @@
-import { Box, Divider, List, ListItemButton, ListItemText, Popover, TextField } from "@mui/material";
-import { Place, SportsScore } from "@mui/icons-material";
+import { Box, CircularProgress, Divider, InputAdornment, List, ListItemButton, ListItemText, Popover, TextField } from "@mui/material";
+import { Place, SportsScore, PushPin, DirectionsBus } from "@mui/icons-material";
 import { useQuerySearchPlaces } from "@/hooks/useQueryTripPlanner";
 import useTripPlannerStore from "@/hooks/useTripPlannerStore";
 import { useShallow } from "zustand/react/shallow";
@@ -14,7 +14,7 @@ export default ({ type }: { type: "from" | "to" }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
     const { city } = useParams();
 
-    const { data: searchPlaces, isLoading } = useQuerySearchPlaces(city!, place.input);
+    const { data: searchPlaces, isFetching } = useQuerySearchPlaces(city!, place.input);
 
     const setSearchPlace = (searchPlace: SearchPlace) => {
         setPlace(type, {
@@ -53,6 +53,11 @@ export default ({ type }: { type: "from" | "to" }) => {
                         autoCapitalize: "none",
                         autoComplete: "off",
                         autoCorrect: "off",
+                        endAdornment: isFetching ? (
+                            <InputAdornment position="end">
+                                <CircularProgress size={20} color={"inherit"}/>
+                            </InputAdornment>
+                        ) : null,
                     },
                 }}
                 sx={{
@@ -62,7 +67,6 @@ export default ({ type }: { type: "from" | "to" }) => {
                     },
                 }}
             />
-
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -99,6 +103,7 @@ export default ({ type }: { type: "from" | "to" }) => {
                             key={searchPlace[ESearchPlace.id]}
                             onClick={() => setSearchPlace(searchPlace)}
                         >
+                            {searchPlace[ESearchPlace.type] === "google" ? <PushPin fontSize="small"/> : <DirectionsBus fontSize="small"/>}
                             <ListItemText
                                 primary={searchPlace[ESearchPlace.name]}
                                 secondary={searchPlace[ESearchPlace.address]}

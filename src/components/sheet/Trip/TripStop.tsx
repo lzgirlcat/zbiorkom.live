@@ -53,12 +53,24 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
 
     return (
         <ListItemButton
-            onClick={() =>
+            onClick={(e) => {
+                if (
+                    e.defaultPrevented ||
+                    e.button !== 0 ||
+                    e.metaKey ||
+                    e.ctrlKey ||
+                    e.shiftKey ||
+                    e.altKey
+                ) {
+                    return;
+                }
+                e.preventDefault();
                 map?.flyTo({
                     center: stop[ETripStop.location],
                     zoom: map.getZoom() > 14 ? map.getZoom() : 14,
                 })
-            }
+            }}
+            href={window.location.origin + `/${city}/${trip[ETrip.route][ERoute.type] == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`}
             onDoubleClick={() =>
                 navigate(
                     `/${city}/${trip[ETrip.route][ERoute.type] == 2 ? "station" : "stop"}/${stop[ETripStop.id]}`,

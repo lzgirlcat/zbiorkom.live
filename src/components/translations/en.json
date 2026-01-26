@@ -225,7 +225,9 @@
         "noResultsFoundDescription": "We don't know how to get there...",
         "lastUpdated": "Last updated",
         "leave": "Leave at",
-        "arrive": "Arrive by"
+        "arrive": "Arrive by",
+        "departure": "Departure",
+        "now": "Now"
     },
     "Layers": {
         "layers": "Layers",

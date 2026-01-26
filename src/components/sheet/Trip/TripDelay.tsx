@@ -1,15 +1,17 @@
 import { useTranslation } from "react-i18next";
 import { DelayType, StatusWpisuKontrolnego, StopTime, EStopTime } from "typings";
-import { GpsFixed, GpsOff, DoneAll, Done, WarningAmber } from "@mui/icons-material";
+import { GpsFixed, GpsOff, DoneAll, Done, WarningAmber, HelpOutline } from "@mui/icons-material";
 import { getDelay } from "@/util/tools";
 
 export default ({
     delay,
+    swk,
     showGPS,
     stopTimes,
     isLast,
 }: {
     delay: DelayType;
+    swk?: StatusWpisuKontrolnego | null;
     showGPS?: boolean;
     stopTimes?: [StopTime, StopTime];
     isLast?: boolean;
@@ -34,22 +36,21 @@ export default ({
         (showGPS !== false && delay === "live") || (showGPS === true && delay !== "scheduled");
     const showOffGPS = delay === "scheduled" || showGPS === false;
 
-    const swkClass = stopTimes
-        ? stopTimes[isLast ? 0 : 1][EStopTime.swk] !== StatusWpisuKontrolnego.Confirmed
-            ? stopTimes[isLast ? 0 : 1][EStopTime.estimated] + 5 * 60 * 1000 < Date.now() ? "delay-warning" : "delay-unset"
-            : (stopTimes[0][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst) ? "delay-unset" : "delay-none"
-        : "";
     const swkIcon = hasSwk && stopTimes[0][EStopTime.estimated] < Date.now() && delay !== "scheduled" ? (
-            stopTimes[0][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst ? (
-                stopTimes[1][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst || isLast ? (
-                    <DoneAll fontSize="small" className={swkClass} />
-                ) : (
-                    <Done fontSize="small" className={swkClass} />
-                )
+        stopTimes[0][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst ? (
+            stopTimes[1][EStopTime.swk] === StatusWpisuKontrolnego.Confirmed || isFirst || isLast ? (
+                <DoneAll fontSize="small"/>
             ) : (
-                <WarningAmber fontSize="small" className={swkClass} />
+                <Done fontSize="small"/>
             )
-        ) : null;
+        ) : (
+            stopTimes[isLast ? 0 : 1][EStopTime.estimated] + 5 * 60 * 1000 < Date.now() ?
+            (<WarningAmber fontSize="small"/>)
+            : (<HelpOutline fontSize="small"/>)
+        )
+    ) : (
+        swk && swk == StatusWpisuKontrolnego.Confirmed ? <DoneAll fontSize="small"/> : null
+    );
 
     return (
         <span className={`delay delay-${delayClass}`}>

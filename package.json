@@ -31,7 +31,7 @@
     "scripts": {
         "build": "vite build && npx workbox-cli generateSW workbox-config.cjs",
         "preview": "vite preview",
-        "dev": "vite --host 0.0.0.0"
+        "dev": "vite --host"
     },
     "eslintConfig": {
         "extends": [

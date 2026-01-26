@@ -44,6 +44,16 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
         <ListItemButton
             onDoubleClick={() => goTo()}
             onClick={(e) => {
+                if (
+                    e.defaultPrevented ||
+                    e.button !== 0 ||
+                    e.metaKey ||
+                    e.ctrlKey ||
+                    e.shiftKey ||
+                    e.altKey
+                ) {
+                    return;
+                }
                 e.preventDefault();
                 vehicle ? goTo() : setExpanded(!isExpanded);
             }}
@@ -62,7 +72,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                 },
                 opacity: isCancelled ? 0.7 : undefined,
             }}
-            href={window.location.origin + path}
+            href={window.location.origin + "/" + path}
         >
             <ListItemText
                 primary={
@@ -88,6 +98,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                         >
                             <VehicleDelay
                                 delay={delay}
+                                swk={departure[EStopDeparture.departure][EStopTime.swk]}
                                 showGPS={
                                     !!departure[EStopDeparture.vehicleId] || (isStation ? undefined : false)
                                 }

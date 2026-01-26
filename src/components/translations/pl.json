@@ -227,7 +227,9 @@
         "noResultsFoundDescription": "Nie wiemy jak tu dojechać...",
         "lastUpdated": "Ostatnio zaktualizowano",
         "leave": "Wyjdź o",
-        "arrive": "Przyjazd o"
+        "arrive": "Przyjazd o",
+        "departure": "Wyjazd",
+        "now": "Teraz"
     },
     "Layers": {
         "layers": "Warstwy",

@@ -18,13 +18,14 @@ type StopDeparturesQueryProps = {
 export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
     const stopStore = useStopStore((state) => state);
     const queryClient = useQueryClient();
-    const queryKey = ["stop", props.stop, props.destinations];
 
     const [params, setSearchParams] = useSearchParams()
     const limit = props.limit || stopStore.limit;
     if (!stopStore.time && params.get("t") && params.get("t") !== null) stopStore.setTime(+params.get("t"))
     const time = props.time || stopStore.time;
     const destinations = props.destinations?.join(",") || stopStore.destination;
+
+    const queryKey = ["stop", props.stop, props.destinations, time];
 
     const query = useQuery({
         queryKey,

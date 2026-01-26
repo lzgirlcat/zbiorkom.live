@@ -1,9 +1,13 @@
 import { DelayType, RawSearchResult, APISearch, ESearchRelation } from "typings";
 import cities from "cities";
 
-export const getTime = (time: number) => {
+export const getTime = (time: number, maybeShowDate: boolean = false) => {
+    const showDate = maybeShowDate && Math.abs(((time - Date.now())) / (1000 * 60 * 60 * 24)) >= 1
     return new Date(time).toLocaleTimeString("pl", {
         hour12: false,
+        day: showDate ? "2-digit" : undefined,
+        month: showDate ? "2-digit": undefined,
+        year: showDate ? "2-digit": undefined,
         hour: "2-digit",
         minute: "2-digit",
         second: JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined,

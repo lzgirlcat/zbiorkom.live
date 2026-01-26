@@ -9,14 +9,14 @@ import {
     Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import useGoBack from "@/hooks/useGoBack";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
 type Props = {
     value: number; // full timestamp
     onChange: (value: number) => void;
+    open: boolean;
+    close: () => void;
 };
 
 const TimeField = ({
@@ -67,14 +67,11 @@ const TimeField = ({
     />
 );
 
-export default ({ value, onChange }: Props) => {
+export default ({ value, onChange, open, close }: Props) => {
     const [timestamp, setTimestamp] = useState(value);
     const date = new Date(timestamp);
 
-    const navigate = useNavigate();
-    const location = useLocation();
     const { t } = useTranslation("Time");
-    const goBack = useGoBack();
 
     const updateTime = (hours: number, minutes: number) => {
         const newDate = new Date(timestamp);
@@ -91,12 +88,6 @@ export default ({ value, onChange }: Props) => {
 
     const save = () => {
         onChange(timestamp);
-        const s = new URLSearchParams(location.search);
-        s.set("t", timestamp.toString());
-        navigate({
-            pathname: "/" + location.pathname.split("/").filter(Boolean).slice(0, -1).join("/"),
-            search: s.toString(),
-        });
     };
 
     useEffect(() => {
@@ -108,7 +99,7 @@ export default ({ value, onChange }: Props) => {
     }, [timestamp]);
 
     return (
-        <Dialog open fullWidth onClose={goBack}>
+        <Dialog open={open} fullWidth onClose={close}>
             <DialogTitle sx={{ paddingLeft: 3, paddingTop: 2 }}>{t("enterTime")}</DialogTitle>
 
             <DialogContent
@@ -140,7 +131,7 @@ export default ({ value, onChange }: Props) => {
                             },
                         }}
                         onClick={() => changeDate(-1)}
-                        disabled={((timestamp - (new Date()).getTime())) / (1000 * 60 * 60 * 24) < -1}
+                        disabled={((timestamp - Date.now())) / (1000 * 60 * 60 * 24) < -1}
                     >
                         <ArrowBack />
                     </Button>
@@ -159,7 +150,7 @@ export default ({ value, onChange }: Props) => {
                                 "&:disabled": { backgroundColor: "background.paper", opacity: 0.7 },
                             },
                         }}
-                        disabled={((timestamp - (new Date()).getTime())) / (1000 * 60 * 60 * 24) > 6}
+                        disabled={((timestamp - Date.now())) / (1000 * 60 * 60 * 24) > 6}
                     >
                         <ArrowForward />
                     </Button>
@@ -245,7 +236,7 @@ export default ({ value, onChange }: Props) => {
             </DialogContent>
 
             <DialogActions sx={{ paddingRight: 3, paddingBottom: 2 }}>
-                <Button onClick={goBack}>{t("cancel")}</Button>
+                <Button onClick={close}>{t("cancel")}</Button>
                 <Button onClick={save}>{t("save")}</Button>
             </DialogActions>
         </Dialog>

@@ -3,15 +3,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AccessTime, Close, Star, StarOutline } from "@mui/icons-material";
 import useGoBack from "@/hooks/useGoBack";
 import StopTag from "@/ui/StopTag";
-import { EStop, EStopDeparture, EStopDepartures } from "typings";
+import { EStop, EStopDepartures } from "typings";
 import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import useFavStore from "@/hooks/useFavStore";
 import { useShallow } from "zustand/react/shallow";
+import { useState } from "react";
+import TimePicker from "@/ui/TimePicker";
+import useStopStore from "@/hooks/useStopStore";
 
 export default () => {
     const { city, stop } = useParams();
     const navigate = useNavigate();
     const goBack = useGoBack();
+
+    const [ timepickerOpen, setTimepickerOpen ] = useState(false);
+    const stopStore = useStopStore((state) => state);
+    const [time, setTime] = useState<number>(stopStore.time || Date.now());
+
 
     const [favorites, add] = useFavStore(
         useShallow((state) => [state.favorites, state.addFavoriteStop]),
@@ -78,7 +86,7 @@ export default () => {
                     {isFavorite ? <Star />: <StarOutline />}
                 </IconButton>
 
-                <IconButton size="small" onClick={() => navigate(window.location.pathname + "/time")}>
+                <IconButton size="small" onClick={() => setTimepickerOpen(true)}>
                     <AccessTime />
                 </IconButton>
 
@@ -86,6 +94,21 @@ export default () => {
                     <Close />
                 </IconButton>
             </Box>
+            <TimePicker
+                open={timepickerOpen}
+                value={time}
+                close={() => setTimepickerOpen(false)}
+                onChange={(time) => {
+                    setTime(time);
+                    stopStore.setTime(time);
+                    setTimepickerOpen(false);
+                    const s = new URLSearchParams(location.search);
+                    s.set("t", time.toString());
+                    navigate({
+                        search: s.toString(),
+                    });
+                }}
+            />
         </Box>
     );
 };

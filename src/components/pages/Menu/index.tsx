@@ -176,6 +176,22 @@ export default ({
                     }}
                 />
             )}
+            {(localStorage.getItem("themeColor") || "#3662ff") === "#3662ff" && (
+                <img
+                    src="/zandbi-blue-dabadeeba-daba.webp"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        position: "absolute",
+                        bottom: 0,
+                        opacity: 0.7,
+                        pointerEvents: "none",
+                        touchAction: "none",
+                        maskImage: "linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
+                        WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0))",
+                    }}
+                />
+            )}
 
             <div
                 style={{

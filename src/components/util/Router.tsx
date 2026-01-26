@@ -24,7 +24,6 @@ const Settings = lazy(() => import("@/pages/Settings/"));
 const SettingsTheme = lazy(() => import("@/pages/Settings/ThemeDialog"));
 
 const Stop = lazy(() => import("@/pages/Stop"));
-const StopTimePicker = lazy(() => import("@/sheet/Stop/StopTimePicker"));
 
 const Trip = lazy(() => import("@/pages/Trip"));
 const TripAlerts = lazy(() => import("@/pages/Trip/TripAlerts"));
@@ -212,14 +211,6 @@ export default () => {
                             ),
                             children: [
                                 {
-                                    path: "time",
-                                    element: (
-                                        <Suspense>
-                                            <StopTimePicker />
-                                        </Suspense>
-                                    ),
-                                },
-                                {
                                     path: "addToFav",
                                     element: (
                                         <Suspense>
@@ -237,14 +228,6 @@ export default () => {
                                 </Suspense>
                             ),
                             children: [
-                                {
-                                    path: "time",
-                                    element: (
-                                        <Suspense>
-                                            <StopTimePicker />
-                                        </Suspense>
-                                    ),
-                                },
                                 {
                                     path: "addToFav",
                                     element: (

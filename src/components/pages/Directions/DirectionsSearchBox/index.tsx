@@ -3,6 +3,10 @@ import { AccessTime, ArrowBack, Refresh, Settings, SwapVert } from "@mui/icons-m
 import useTripPlannerStore from "@/hooks/useTripPlannerStore";
 import { useShallow } from "zustand/react/shallow";
 import SearchField from "./SearchField";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import TimePicker from "@/ui/TimePicker";
+import { getTime } from "@/util/tools";
 
 type Props = {
     isLoading: boolean;
@@ -12,6 +16,11 @@ type Props = {
 
 export default ({ isLoading, refresh, onClose }: Props) => {
     const switchPlaces = useTripPlannerStore(useShallow((state) => state.switchPlaces));
+    const { t } = useTranslation("Directions");
+    const [timepickerOpen, setTimepickerOpen] = useState(false);
+    const [time, setTime] = useTripPlannerStore(
+        useShallow((state) => [state.time, state.setTime]),
+    );
 
     return (
         <>
@@ -98,9 +107,10 @@ export default ({ isLoading, refresh, onClose }: Props) => {
                         padding: 1,
                         gap: 0.5,
                     }}
+                    onClick={() => setTimepickerOpen(true)}
                 >
                     <AccessTime fontSize="small" />
-                    Wyjazd: <span style={{ fontWeight: "bold" }}>Teraz</span>
+                    {t("departure")}: <span style={{ fontWeight: "bold" }}>{typeof time.timestamp === "number" ? getTime(time.timestamp, true): t("now")}</span>
                 </ButtonBase>
 
                 <Box
@@ -125,6 +135,18 @@ export default ({ isLoading, refresh, onClose }: Props) => {
                     </IconButton>
                 </Box>
             </Box>
+            <TimePicker
+                open={timepickerOpen}
+                close={() => setTimepickerOpen(false)}
+                value={typeof time.timestamp === "number" ? time.timestamp: Date.now()}
+                onChange={(timestamp) => {
+                    setTime({
+                        "timestamp": timestamp,
+                        arriveBy: false
+                    });
+                    setTimepickerOpen(false);
+                }}
+            />
         </>
     );
 };
