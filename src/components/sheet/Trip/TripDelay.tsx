@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { DelayType, StatusWpisuKontrolnego, StopTime, EStopTime } from "typings";
 import { GpsFixed, GpsOff, DoneAll, Done, WarningAmber, HelpOutline } from "@mui/icons-material";
-import { getDelay } from "@/util/tools";
+import { getDelay, getTime } from "@/util/tools";
 
 export default ({
     delay,
@@ -19,7 +19,7 @@ export default ({
     let [delayClass, delayTime] = getDelay(delay);
     const { t } = useTranslation("Vehicle");
 
-    const hasSwk = stopTimes && (stopTimes[0][EStopTime.swk] != null || stopTimes[0][EStopTime.swk] != null);
+    const hasSwk = stopTimes && (stopTimes[0][EStopTime.swk] != null || stopTimes[1][EStopTime.swk] != null);
     const isFirst = hasSwk
         ? stopTimes[0][EStopTime.swk] == null && stopTimes[1][EStopTime.swk] != null && !isLast
         : false;
