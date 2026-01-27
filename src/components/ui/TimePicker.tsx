@@ -136,7 +136,12 @@ export default ({ value, onChange, open, close }: Props) => {
                         <ArrowBack />
                     </Button>
                     <Typography variant="h6" sx={{ minWidth: 120, textAlign: "center" }}>
-                        {date.toLocaleDateString()}
+                        {date.toLocaleDateString(undefined, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "numeric",
+                            day: "numeric"
+                        })}
                     </Typography>
                     <Button
                         size="small"
