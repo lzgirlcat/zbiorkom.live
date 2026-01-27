@@ -137,6 +137,11 @@ export default () => {
                                                 padding: "10px",
                                                 margin: "2px",
                                             }}
+                                            sx={{
+                                                "&:hover .MuiChip-label": {
+                                                    textDecoration: "none"
+                                                }
+                                            }}
                                             onClick={() =>
                                                 setSelectedAgencies(
                                                     (prev) =>
@@ -203,6 +208,14 @@ export default () => {
                                                 fontSize: "17px",
                                                 padding: "10px",
                                                 margin: "2px",
+                                                "&& .MuiChip-label:hover": {
+                                                    textDecoration: "none"
+                                                }
+                                            }}
+                                            sx={{
+                                                "&:hover .MuiChip-label": {
+                                                    textDecoration: "none"
+                                                }
                                             }}
                                             onClick={() =>
                                                 setSelectedTypes((prev) =>
