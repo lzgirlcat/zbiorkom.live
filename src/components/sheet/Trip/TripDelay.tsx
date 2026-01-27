@@ -5,13 +5,13 @@ import { getDelay, getTime } from "@/util/tools";
 
 export default ({
     delay,
-    swk,
+    stopTime,
     showGPS,
     stopTimes,
     isLast,
 }: {
     delay: DelayType;
-    swk?: StatusWpisuKontrolnego | null;
+    stopTime?: StopTime | null;
     showGPS?: boolean;
     stopTimes?: [StopTime, StopTime];
     isLast?: boolean;
@@ -49,7 +49,7 @@ export default ({
             : (<HelpOutline fontSize="small"/>)
         )
     ) : (
-        swk && swk == StatusWpisuKontrolnego.Confirmed ? <DoneAll fontSize="small"/> : null
+        stopTime && stopTime[EStopTime.estimated] < Date.now() && stopTime[EStopTime.swk] && stopTime[EStopTime.swk] == StatusWpisuKontrolnego.Confirmed ? <DoneAll fontSize="small"/> : null
     );
 
     return (

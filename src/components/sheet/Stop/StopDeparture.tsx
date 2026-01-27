@@ -98,7 +98,7 @@ export default ({ departure, isStation }: { departure: StopDeparture; isStation:
                         >
                             <VehicleDelay
                                 delay={delay}
-                                swk={departure[EStopDeparture.departure][EStopTime.swk]}
+                                stopTime={departure[EStopDeparture.departure]}
                                 showGPS={
                                     !!departure[EStopDeparture.vehicleId] || (isStation ? undefined : false)
                                 }
