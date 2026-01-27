@@ -11,7 +11,7 @@
         "@vis.gl/react-maplibre": "^8.1.0",
         "body-scroll-lock-upgrade": "^1.1.0",
         "i18next": "^25.5.2",
-        "maplibre-gl": "^5.14.0",
+        "maplibre-gl": "^5.16.0",
         "material-color-lite": "^1.0.1",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",

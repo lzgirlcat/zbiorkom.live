@@ -21,9 +21,14 @@ def remove_hillshade_and_dem(style):
 
 def fix_vector_sources(style):
     for src in style.get("sources", {}).values():
-        if src.get("type") == "vector" and isinstance(src.get("url"), str) and src["url"].startswith("/"):
+        if (
+            src.get("type") == "vector"
+            and isinstance(src.get("url"), str)
+            and src["url"].startswith("/")
+        ):
             path = src.pop("url")
-            src["tiles"] = [f"https://openrailwaymap.app{path}/{{z}}/{{x}}/{{y}}.pbf"]
+            src["url"] = f"https://openrailwaymap.app{path}"
+            # src["tiles"] = [f"https://openrailwaymap.app{path}/{{z}}/{{x}}/{{y}}"]
 
 
 def replace_global_state(expr):
@@ -32,16 +37,20 @@ def replace_global_state(expr):
 
     if isinstance(expr, list):
         # case ["==", ["global-state", "theme"], "light"] → light branch
-        if (expr[0] == "case"
-                and len(expr) >= 4
-                and expr[1] == ["==", ["global-state", "theme"], "light"]):
+        if (
+            expr[0] == "case"
+            and len(expr) >= 4
+            and expr[1] == ["==", ["global-state", "theme"], "light"]
+        ):
             return replace_global_state(expr[2])
 
         # ["get", ["global-state", "stationLowZoomLabel"]] → null (show name always)
-        if (expr[0] == "get"
-                and len(expr) == 2
-                and isinstance(expr[1], list)
-                and expr[1][0] == "global-state"):
+        if (
+            expr[0] == "get"
+            and len(expr) == 2
+            and isinstance(expr[1], list)
+            and expr[1][0] == "global-state"
+        ):
             return None
 
         # bare ["global-state", …] → null
@@ -70,10 +79,10 @@ def add_osm_background(style):
         "tiles": [
             "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
             "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
         ],
         "tileSize": 256,
-        "attribution": "© OpenStreetMap contributors"
+        "attribution": "© OpenStreetMap contributors",
     }
 
     osm_layer = {
@@ -81,7 +90,7 @@ def add_osm_background(style):
         "type": "raster",
         "source": "osm-raster",
         "minzoom": 0,
-        "maxzoom": 22
+        "maxzoom": 22,
     }
     style["layers"].insert(0, osm_layer)
 
@@ -95,7 +104,7 @@ def main():
     style = download_style()
     remove_hillshade_and_dem(style)
     fix_vector_sources(style)
-    force_light_theme(style)
+    # force_light_theme(style)
     add_osm_background(style)
     fix_assets(style)
     print(json.dumps(style, indent=2, sort_keys=True))
