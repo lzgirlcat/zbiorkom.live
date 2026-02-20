@@ -10,7 +10,6 @@ import { useShallow } from "zustand/react/shallow";
 import useMarkers from "@/hooks/useMarkers";
 import DotMarkers from "./DotMarkers";
 import { DotVehicle, EStop, EVehicle, Vehicle } from "typings";
-import cities from "cities";
 import { useTranslation } from "react-i18next";
 
 export default ({ city }: { city: string }) => {
@@ -123,7 +122,7 @@ export default ({ city }: { city: string }) => {
                     }}
                 >
                     <span style={{ marginLeft: 8 }}>
-                        {t("switchTo")} <b>{cities[suggestedCity].name}</b>?
+                        {t("switchTo")} <b>{window.Cities[suggestedCity].name}</b>?
                     </span>
                     <Button
                         variant="contained"

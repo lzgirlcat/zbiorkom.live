@@ -1,5 +1,4 @@
 import { DelayType, RawSearchResult, APISearch, ESearchRelation } from "typings";
-import cities from "cities";
 
 export const getTime = (time: number, maybeShowDate: boolean = false) => {
     const showDate = maybeShowDate && Math.abs(((time - Date.now())) / (1000 * 60 * 60 * 24)) >= 1
@@ -119,8 +118,8 @@ export const getInitialViewState = (cityId: string) => {
             zoom: lfl[2],
         };
     } else {
-        const location = cities[cityId]?.location || cities["warsaw"].location;
-        const zoom = cities[cityId]?.zoom || 13.5;
+        const location = window.Cities[cityId]?.location || window.Cities["warsaw"].location;
+        const zoom = window.Cities[cityId]?.zoom || 13.5;
 
         return {
             longitude: location[0],

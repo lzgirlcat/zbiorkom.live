@@ -7,25 +7,36 @@ import App from "./App";
 import "./components/util/register";
 import "./components/sheet/sheet.css";
 import "./index.css";
+import { getV6Cities } from "@/util/tools";
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnReconnect: false,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-            retry: false,
-        },
-    },
-});
 
 window.historyLength = window.history.length;
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <QueryClientProvider client={queryClient}>
-        <ErrorBoundary>
-            <CssBaseline />
-            <App />
-        </ErrorBoundary>
-    </QueryClientProvider>,
-);
+async function bootstrap() {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnReconnect: false,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+                retry: false,
+            },
+        },
+    });
+
+    if (localStorage.getItem("useV6") === "true") {
+        window.Cities = await getV6Cities();
+    }
+
+    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+        <QueryClientProvider client={queryClient}>
+            <ErrorBoundary>
+                <CssBaseline />
+                <App />
+            </ErrorBoundary>
+        </QueryClientProvider>,
+    );
+}
+
+
+bootstrap();

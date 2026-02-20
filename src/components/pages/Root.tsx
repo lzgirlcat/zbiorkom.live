@@ -1,7 +1,6 @@
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowBack, Menu as IMenu } from "@mui/icons-material";
 import { Fab } from "@mui/material";
-import cities from "cities";
 import useGoBack from "@/hooks/useGoBack";
 import Menu from "./Menu";
 import WelcomeAlert from "./WelcomeAlert";
@@ -17,7 +16,7 @@ export default () => {
     const showBackButton = !!pathname.split("/")[3];
 
     useEffect(() => {
-        if (!city || !cities[city]) {
+        if (!city || !window.Cities[city]) {
             navigate("/cities");
             return;
         }

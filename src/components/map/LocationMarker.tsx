@@ -6,7 +6,6 @@ import useLocationStore from "@/hooks/useLocationStore";
 import { useShallow } from "zustand/react/shallow";
 import { Location } from "typings";
 import { useLocation } from "react-router-dom";
-import cities from "cities";
 
 export default memo(() => {
     const { pathname } = useLocation();
@@ -121,8 +120,8 @@ export default memo(() => {
 
     const moveToCity = () => {
         const cityId = pathname.split("/")[1];
-        const location = cities[cityId]?.location || cities["warsaw"].location;
-        const zoom = cities[cityId]?.zoom || 13.5;
+        const location = window.Cities[cityId]?.location || window.Cities["warsaw"].location;
+        const zoom = window.Cities[cityId]?.zoom || 13.5;
         moveToLocation(location, zoom);
     };
 

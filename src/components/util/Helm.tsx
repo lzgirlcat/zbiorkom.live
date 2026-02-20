@@ -11,7 +11,7 @@ export default ({
 }) => {
     const { t } = useTranslation("Seo");
     const city = useParams().city;
-    const cityData = cities[city!];
+    const cityData = (window?.Cities || cities)[city!];
 
     const updatedDictionary = {
         ...dictionary,

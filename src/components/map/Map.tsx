@@ -2,7 +2,6 @@ import { mapStyles } from "./mapStyle";
 import { memo, ReactElement, useEffect, useMemo, useRef } from "react";
 import { Map, MapRef } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
-import cities from "cities";
 import { useMapStyleStore } from "@/hooks/useMapStyleStore";
 import { useShallow } from "zustand/react/shallow";
 
@@ -40,7 +39,7 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             onMoveEnd={(e) => {
                 document.getElementById("root")?.classList.remove("moving");
                 const cityId = pathname.split("/")[1];
-                if (cityId in cities && localStorage.getItem("rememberLastFocusedLocation") === "true") {
+                if (cityId in window.Cities && localStorage.getItem("rememberLastFocusedLocation") === "true") {
                     localStorage.setItem(`lastFocusedLocation.${cityId}`, JSON.stringify([e.viewState.longitude, e.viewState.latitude, e.viewState.zoom]));
                 }
             }}

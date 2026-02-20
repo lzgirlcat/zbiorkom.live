@@ -4,10 +4,9 @@ import { getFromAPI } from "@/util/fetchFunctions";
 import { useShallow } from "zustand/react/shallow";
 import useLocationStore from "./useLocationStore";
 import { useQuery } from "@tanstack/react-query";
-import cities from "cities";
 
 export const useQuerySearchPlaces = (city: string, query: string) => {
-    const [longitude, latitude] = useLocationStore((state) => state.userLocation! || cities[city].location);
+    const [longitude, latitude] = useLocationStore((state) => state.userLocation! || window.Cities[city].location);
 
     return useQuery({
         queryKey: ["searchPlaces", city, query],

@@ -1,5 +1,3 @@
-import { getV6Cities } from "@/util/tools";
-
 window.Cities = {
     // bialaPodlaska: {
     //     id: "bialaPodlaska",
@@ -183,11 +181,6 @@ window.Cities = {
         zoom: 10,
     },
 };
-
-
-if (localStorage.getItem("useV6") === "true") {
-    window.Cities = await getV6Cities();
-}
 
 
 export default window.Cities;
