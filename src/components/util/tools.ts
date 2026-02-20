@@ -168,3 +168,18 @@ export const buildSearchView = (
         groupNames: order.map((type) => (api[type]?.length ? type : undefined)).filter(Boolean),
     };
 };
+
+
+export async function getV6Cities() {
+    const data = await fetch("https://next.zbiorkom.live/api6").then(res => res.json());
+    return Object.fromEntries(
+        data.cities!.map((i: { id: any; name: any; location: any; }) => [
+            i.id,
+            {
+                id: i.id,
+                name: i.name,
+                location: i.location
+            }
+        ])
+    );
+}

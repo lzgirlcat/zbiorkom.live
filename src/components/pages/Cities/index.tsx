@@ -95,7 +95,7 @@ export default () => {
                 }}
             >
                 <CitySelect
-                    cities={cityList}
+                    cities={Object.values(window.Cities)}
                     onCityClick={(city) => {
                         setOpen(false);
                         localStorage.setItem("city", city.id);

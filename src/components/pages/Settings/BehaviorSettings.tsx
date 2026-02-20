@@ -21,6 +21,9 @@ export default memo(() => {
         JSON.parse(localStorage.getItem("disableLiquidGlass") || "false"),
     );
 
+    const [useV6, setUseV6] = useState<boolean>(
+        JSON.parse(localStorage.getItem("useV6") || "false"),
+    );
     const [showScheduledTimes, setShowScheduledTimes] = useState<boolean>(
         JSON.parse(localStorage.getItem("showScheduledTimes") || "true")
     );
@@ -81,6 +84,14 @@ export default memo(() => {
             setValue: setDisableLiquidGlass,
             action: (value: boolean) => {
                 document.body.classList.toggle("disable-liquid-glass", value);
+            },
+        },
+        {
+            key: "useV6",
+            value: useV6,
+            setValue: setUseV6,
+            action: () => {
+                location.reload();
             },
         },
     ] as {

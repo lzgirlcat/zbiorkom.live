@@ -17,8 +17,10 @@ i18n.use(initReactI18next).init({
 
 const useLocalhost = location.protocol === "http:" && false;
 
+const useV6Backend = localStorage.getItem("useV6") === "true";
+
 window.Gay = {
-    base: useLocalhost ? "http://localhost:8005" : "https://api.zbiorkom.live",
+    base: useLocalhost ? "http://localhost:8005" : (useV6Backend ? "https://next.zbiorkom.live" :"https://api.zbiorkom.live"),
     cloudBase: "https://4.zbiorkom.live",
 };
 

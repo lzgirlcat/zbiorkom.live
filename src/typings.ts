@@ -501,6 +501,8 @@ declare global {
     }
 
     var Gay: Gay;
+
+    var Cities: Record<string, City>;
 }
 
 export type RawSearchResult = {

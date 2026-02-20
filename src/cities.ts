@@ -1,6 +1,6 @@
-import { City } from "./typings";
+import { getV6Cities } from "@/util/tools";
 
-const cities: Record<string, City> = {
+window.Cities = {
     // bialaPodlaska: {
     //     id: "bialaPodlaska",
     //     name: "Biała Podlaska",
@@ -184,6 +184,10 @@ const cities: Record<string, City> = {
     },
 };
 
-export const cityList = Object.values(cities);
 
-export default cities;
+if (localStorage.getItem("useV6") === "true") {
+    window.Cities = await getV6Cities();
+}
+
+
+export default window.Cities;
