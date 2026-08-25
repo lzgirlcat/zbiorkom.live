@@ -180,6 +180,22 @@ window.Cities = {
         location: [21.01173, 52.22983],
         zoom: 10,
     },
+    helsinki: {
+		"id": "helsinki",
+		"name": "Helsinki",
+		"location": [
+			24.941561,
+			60.170811
+		],
+	},
+    digitraffic: {
+		"id": "digitraffic",
+		"name": "Digitraffic",
+		"location": [
+			24.941561,
+			60.170811
+		],
+    }
 };
 
 

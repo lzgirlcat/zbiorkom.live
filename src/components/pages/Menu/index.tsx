@@ -77,7 +77,7 @@ export default ({
                             gap: 2,
                         }}
                     >
-                        {cities[city!]?.name}
+                        {(window?.Cities || cities)[city!]?.name}
                         <KeyboardArrowDown />
                     </span>
                 </Box>
