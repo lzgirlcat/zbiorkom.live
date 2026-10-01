@@ -75,6 +75,10 @@ export default memo(({ children }: { children: ReactElement[] }) => {
                         });
                     }
                 });
+
+                window.addEventListener("reloadMapSource", () => {
+                    Object.keys(target.getStyle().sources).forEach((source) => target.refreshTiles(source));
+                });
             }}
             style={{ position: "absolute" }}
             initialViewState={initialViewState}

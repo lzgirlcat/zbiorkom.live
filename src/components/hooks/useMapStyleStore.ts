@@ -11,8 +11,10 @@ interface MapStyleState {
     setBasicAppearance: (appearance: MapAppearance) => void;
 }
 
+const savedStyle = localStorage.getItem("mapStyle");
+
 export const useMapStyleStore = create<MapStyleState>((set) => ({
-    selectedStyle: localStorage.getItem("mapStyle") || "basic",
+    selectedStyle: savedStyle && savedStyle in mapStyles ? savedStyle : "basic",
     basicAppearance: localStorage.getItem("mapStyleBasicVariant") || "light",
     selectStyle: (style) => {
         localStorage.setItem("mapStyle", style);
