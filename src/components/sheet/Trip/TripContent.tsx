@@ -101,6 +101,7 @@ export default () => {
                         color={color}
                         update={stops[index]}
                         sequence={sequence}
+                        isLast={index === itinerary[EItinerary.stops].length - 1}
                     />
                 )}
                 overscan={100}

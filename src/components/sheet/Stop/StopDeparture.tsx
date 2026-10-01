@@ -82,6 +82,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
                             <VehicleDelay
                                 delay={delay}
                                 status={status}
+                                stopTime={departureData}
                                 showGPS={!!vehicle && route[ERoute.type] === 2}
                             />
                             ·

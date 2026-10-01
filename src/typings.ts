@@ -228,13 +228,27 @@ export enum EStopDeparture {
     destination = 3,
 }
 
-export type StopTime = [scheduled: number, delay: number, status: EStopDepartureStatus, platform?: string];
+export enum StatusWpisuKontrolnego {
+    Scheduled = 0,
+    Estimated = 1,
+    Confirmed = 2,
+    Cancelled = 3,
+}
+
+export type StopTime = [
+    scheduled: number,
+    delay: number,
+    status: EStopDepartureStatus,
+    platform?: string,
+    swk?: StatusWpisuKontrolnego | null,
+];
 
 export enum EStopTime {
     scheduled = 0,
     delay = 1,
     status = 2,
     platform = 3,
+    swk = 4,
 }
 
 export type StopUpdate = [

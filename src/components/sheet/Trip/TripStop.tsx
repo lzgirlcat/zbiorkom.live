@@ -30,9 +30,10 @@ type Props = {
     color: [color: string, text: string, background: string];
     update: StopUpdate;
     sequence?: number;
+    isLast?: boolean;
 };
 
-export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) => {
+export default ({ vehicle, trip, stop, index, color, update, sequence, isLast }: Props) => {
     const { current: map } = useMap();
     const { t } = useTranslation("Vehicle");
 
@@ -129,7 +130,12 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                         }}
                         component="span"
                     >
-                        <VehicleDelay delay={delay} status={status} />
+                        <VehicleDelay
+                            delay={delay}
+                            status={status}
+                            stopTimes={[update[EStopUpdate.arrival], update[EStopUpdate.departure]]}
+                            isLast={isLast}
+                        />
 
                         {platform && (
                             <span>
