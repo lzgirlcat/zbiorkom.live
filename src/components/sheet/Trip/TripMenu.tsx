@@ -1,18 +1,21 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
-import { Build, EventNote, MoreVert, Report, Share } from "@mui/icons-material";
+import { Build, EventNote, MoreVert, Report, Share, Train } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useVehicleStore from "@/hooks/useVehicleStore";
-import { EVehicle } from "typings";
+import { ERoute, ETrip, EVehicle, VehicleType } from "typings";
 import { useState } from "react";
 import TripLastPing from "./TripLastPing";
 import { useShallow } from "zustand/react/shallow";
 import { parseVehicleId, share } from "@/util/tools";
 
 export default () => {
-    const [vehicle, lastPing, alertCount] = useVehicleStore(
-        useShallow((state) => [state.vehicle, state.lastPing, state.alerts.length]),
+    const [vehicle, lastPing, alertCount, trip] = useVehicleStore(
+        useShallow((state) => [state.vehicle, state.lastPing, state.alerts.length, state.trip]),
     );
+
+    const isIntercity =
+        trip?.[ETrip.route][ERoute.type] === VehicleType.Train && trip[ETrip.route][ERoute.agency] === "IC";
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation(["Vehicle", "Shared"]);
@@ -88,6 +91,20 @@ export default () => {
                             <Build fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary={t("vehicleInfo")} />
+                    </MenuItem>
+                )}
+
+                {isIntercity && (
+                    <MenuItem
+                        component="a"
+                        href={`https://bocznica.eu/stats/${trip[ETrip.shortName].split(" ")[0]}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <ListItemIcon>
+                            <Train fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Bocznica.eu" />
                     </MenuItem>
                 )}
             </Menu>
