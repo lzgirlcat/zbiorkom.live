@@ -6,7 +6,7 @@ interface StopState {
 }
 
 export default create<StopState>()((set) => ({
-    color: localStorage.getItem("themeColor") || "#276b2b",
+    color: localStorage.getItem("themeColor") || "#720546",
     setColor: (color) => {
         localStorage.setItem("themeColor", color);
         document.querySelector("meta[name=theme-color]")?.setAttribute("content", color);

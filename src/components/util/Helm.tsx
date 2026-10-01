@@ -25,8 +25,8 @@ export default ({
 
     return (
         <>
-            <title>{`zbiorkom.live - ${title}`}</title>
-            <meta property="og:title" content={`zbiorkom.live - ${title}`} />
+            <title>{`🚉 zbiorkom - ${title}`}</title>
+            <meta property="og:title" content={`zbiorkom - ${title}`} />
 
             {hasDescription && <meta name="description" content={description} />}
             {hasDescription && <meta property="og:description" content={description} />}

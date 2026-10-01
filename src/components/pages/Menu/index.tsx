@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import MenuItem from "./MenuItem";
 import { DiscordIcon, Logo } from "@/ui/Icon";
 import cities from "cities";
+import useThemeStore from "@/hooks/useThemeStore";
+import { CSSProperties } from "react";
 import {
-    Email,
     EventNote,
     EventNoteOutlined,
     Facebook,
@@ -19,6 +20,16 @@ import {
     Settings,
     SettingsOutlined,
 } from "@mui/icons-material";
+
+const fadeOut = "linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0))";
+
+// picture shown at the bottom of the menu for some theme colors
+const themeImages: Record<string, { src: string; style?: CSSProperties }> = {
+    "#720546": { src: "/zandbi.jpg" },
+    "#3662ff": { src: "/zandbi-blue-dabadeeba-daba.webp" },
+    "#ffffff": { src: "/frolicking.gif" },
+    "#e9c171": { src: "/arson.png", style: { bottom: 100, maskImage: "none", WebkitMaskImage: "none" } },
+};
 
 export default ({
     open,
@@ -35,6 +46,7 @@ export default ({
     const { city } = useParams();
 
     const path = pathname.split("/")[2];
+    const themeImage = themeImages[useThemeStore((state) => state.color)];
 
     return (
         <SwipeableDrawer
@@ -69,7 +81,7 @@ export default ({
                         flexDirection: "column",
                     }}
                 >
-                    <b>Zbiorkom.live</b>
+                    <b>zbiorkom.girlc.at</b>
                     <span
                         style={{
                             display: "flex",
@@ -128,6 +140,24 @@ export default ({
                 />
             </List>
 
+            {themeImage && (
+                <img
+                    src={themeImage.src}
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        position: "absolute",
+                        bottom: 0,
+                        opacity: 0.7,
+                        pointerEvents: "none",
+                        touchAction: "none",
+                        maskImage: fadeOut,
+                        WebkitMaskImage: fadeOut,
+                        ...themeImage.style,
+                    }}
+                />
+            )}
+
             <div
                 style={{
                     position: "absolute",
@@ -139,20 +169,17 @@ export default ({
                 }}
             >
                 <Box>
-                    <IconButton href="https://www.facebook.com/profile.php?id=61558868339377" target="_blank">
+                    <IconButton href="https://girlc.at/assets/redirect.html" target="_blank">
                         <Facebook htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
-                    <IconButton href="https://www.instagram.com/zbiorkom.live/" target="_blank">
+                    <IconButton href="https://girlc.at/assets/redirect.html" target="_blank">
                         <Instagram htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
-                    <IconButton href="https://github.com/DomeQdev/zbiorkom.live" target="_blank">
+                    <IconButton href="https://github.com/lzgirlcat/zbiorkom.live" target="_blank">
                         <GitHub htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                     <IconButton href="https://discord.gg/gUhMz2Wckf" target="_blank">
                         <DiscordIcon htmlColor="hsla(0, 0%, 100%, 0.6)" />
-                    </IconButton>
-                    <IconButton href="mailto:admin@zbiorkom.live" target="_blank">
-                        <Email htmlColor="hsla(0, 0%, 100%, 0.6)" />
                     </IconButton>
                 </Box>
 
@@ -163,7 +190,7 @@ export default ({
                         textDecoration: "none",
                         color: "inherit",
                     }}
-                    href="/privacy-policy.pdf"
+                    href="https://girlc.at/assets/redirect.html"
                     target="_blank"
                     rel="noopener noreferrer"
                 >

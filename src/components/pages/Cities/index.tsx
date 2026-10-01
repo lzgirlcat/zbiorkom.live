@@ -79,7 +79,7 @@ export default () => {
                         },
                     }}
                 >
-                    {t("welcomeTo")} <b>zbiorkom.live</b>
+                    {t("welcomeTo")} <b>zbiorkom.girlc.at</b>
                 </Typography>
 
                 <Typography variant="body1" sx={{ color: "text.secondary", textAlign: "center" }}>
