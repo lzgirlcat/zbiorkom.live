@@ -29,7 +29,7 @@
         "not op_mini all"
     ],
     "scripts": {
-        "build": "vite build && npx workbox-cli generateSW workbox-config.cjs",
+        "build": "vite build && pnpx workbox-cli generateSW workbox-config.cjs && sh -c \"echo '// $(git rev-parse --short HEAD)\n' >> dist/service-worker.js\"",
         "preview": "vite preview",
         "dev": "vite"
     },
