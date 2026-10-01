@@ -7,6 +7,7 @@ import { parseVehicleId } from "@/util/tools";
 // keyed by city + fleet number
 const vehicleEmotes: Record<string, string> = {
     bialystok263: "🏎️",
+    bialystok461: "🏎️"
 };
 
 type Props = {

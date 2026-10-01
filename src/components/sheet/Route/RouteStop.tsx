@@ -68,7 +68,7 @@ export default ({ row, route, beads, onExpand }: Props) => {
                             overflow: "hidden",
                             whiteSpace: "nowrap",
                             textOverflow: "ellipsis",
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: 500,
                         }}
                     >
