@@ -11,7 +11,6 @@ export default defineConfig({
         "import.meta.env.VITE_APP_VERSION": JSON.stringify(version),
     },
     server: {
-        open: true,
         port: 3000,
     },
     build: {
