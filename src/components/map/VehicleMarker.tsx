@@ -4,6 +4,11 @@ import { Marker } from "@vis.gl/react-maplibre";
 import { ERoute, EVehicle, Vehicle } from "typings";
 import { parseVehicleId } from "@/util/tools";
 
+// keyed by city + fleet number
+const vehicleEmotes: Record<string, string> = {
+    bialystok263: "🏎️",
+};
+
 type Props = {
     vehicle: Vehicle;
     showBrigade: boolean;
@@ -14,6 +19,7 @@ type Props = {
 export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
     const { vehicleNumber } = parseVehicleId(vehicle[EVehicle.id]);
     const showFleetId = showFleet && !vehicleNumber.startsWith("_");
+    const emote = vehicleEmotes[vehicle[EVehicle.route][ERoute.city] + vehicleNumber];
 
     return (
         <Marker
@@ -51,6 +57,7 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
                 <span>
                     {showBrigade && vehicle[EVehicle.brigade] ? `/${vehicle[EVehicle.brigade]}` : ""}
                     {showFleetId ? `/${vehicleNumber}` : ""}
+                    {showFleet && emote ? emote : ""}
                 </span>
             </div>
         </Marker>
