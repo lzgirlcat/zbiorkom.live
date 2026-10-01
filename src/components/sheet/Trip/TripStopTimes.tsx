@@ -1,42 +1,37 @@
 import { getTime } from "@/util/tools";
 import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
-import { EStopUpdate, EStopTime, StopUpdate, EStopDepartureStatus } from "typings";
+import { EStopUpdate, EStopTime, StopUpdate, EStopDepartureStatus, StopTime } from "typings";
 
 type Props = {
-    isTrain: boolean;
     update: StopUpdate;
     hasDeparted: boolean;
 };
 
-export default ({ isTrain, update, hasDeparted }: Props) => {
-    const [departureTime, isSingleTimeButDelayed, delayType, times, isLiveStatus] = useMemo(() => {
-        const arrScheduled = update[EStopUpdate.arrival][EStopTime.scheduled];
-        const arrDelay = update[EStopUpdate.arrival][EStopTime.delay];
-        const depScheduled = update[EStopUpdate.departure][EStopTime.scheduled];
-        const depDelay = update[EStopUpdate.departure][EStopTime.delay];
-        const depStatus = update[EStopUpdate.departure][EStopTime.status];
+const getDelayType = (time: StopTime) => {
+    const status = time[EStopTime.status];
+    const delay = time[EStopTime.delay];
 
-        const arrEstimated = arrScheduled + arrDelay;
-        const depEstimated = depScheduled + depDelay;
+    if (status === EStopDepartureStatus.Cancelled || status === EStopDepartureStatus.Scheduled) return;
+    return delay > 60000 ? "delayed" : delay < -60000 ? "early" : undefined;
+};
 
-        const arrivalTimeStr = getTime(arrEstimated);
-        const departureTimeStr = getTime(depEstimated);
-        const isSingleTime = arrivalTimeStr === departureTimeStr;
+const formatTime = (time: StopTime) =>
+    [
+        getTime(time[EStopTime.scheduled]),
+        getTime(time[EStopTime.scheduled] + time[EStopTime.delay]),
+        getDelayType(time),
+    ] as const;
 
-        const liveStatus =
-            depStatus !== EStopDepartureStatus.Cancelled && depStatus !== EStopDepartureStatus.Scheduled;
+export default ({ update, hasDeparted }: Props) => {
+    const showSeconds = JSON.parse(localStorage.getItem("showSeconds") || "false");
+    const mergeArrivalDeparture = JSON.parse(localStorage.getItem("mergeArrivalDeparture") || "true");
+    const showScheduledTimes = JSON.parse(localStorage.getItem("showScheduledTimes") || "true");
 
-        return [
-            departureTimeStr,
-            !isTrain && isSingleTime && Math.abs(depDelay) >= 60000,
-            depDelay > 0 ? "delayed" : "early",
-            isSingleTime
-                ? [update[EStopUpdate.departure]]
-                : [update[EStopUpdate.arrival], update[EStopUpdate.departure]],
-            liveStatus,
-        ];
-    }, [update, isTrain]);
+    const [arrivalTime, departureTime] = useMemo(
+        () => [formatTime(update[EStopUpdate.arrival]), formatTime(update[EStopUpdate.departure])],
+        [update],
+    );
 
     return (
         <Box
@@ -44,7 +39,7 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                width: 33,
+                width: showSeconds ? 49.5 : 33,
                 "& .MuiTypography-root": {
                     fontSize: 12,
                     textAlign: "right",
@@ -53,43 +48,22 @@ export default ({ isTrain, update, hasDeparted }: Props) => {
                 opacity: hasDeparted ? 0.7 : undefined,
             }}
         >
-            {isSingleTimeButDelayed ? (
+            {!(mergeArrivalDeparture && arrivalTime[1] === departureTime[1]) && (
                 <>
-                    <Typography
-                        sx={{
-                            textDecoration: "line-through",
-                            fontWeight: undefined,
-                        }}
-                    >
-                        {getTime(update[EStopUpdate.departure][EStopTime.scheduled])}
-                    </Typography>
-
-                    <Typography className={`delay delay-${isLiveStatus ? delayType : "unknown"}`}>
-                        {departureTime}
+                    {showScheduledTimes && arrivalTime[0] !== arrivalTime[1] && arrivalTime[2] && (
+                        <Typography sx={{ textDecoration: "line-through" }}>{arrivalTime[0]}</Typography>
+                    )}
+                    <Typography className={`delay delay-${arrivalTime[2] ?? "unset"}`}>
+                        {arrivalTime[2] ? arrivalTime[1] : arrivalTime[0]}
                     </Typography>
                 </>
-            ) : (
-                times.map((time, i) => {
-                    const scheduled = time[EStopTime.scheduled];
-                    const delay = time[EStopTime.delay];
-                    const estimated = scheduled + delay;
-
-                    const isNumber = typeof delay === "number";
-                    const delayMinutes = isNumber && Math.floor(Math.abs(delay) / 60000);
-                    const delayClass =
-                        isLiveStatus && isNumber && delayMinutes
-                            ? delay > 0
-                                ? "delayed"
-                                : "early"
-                            : "unknown";
-
-                    return (
-                        <Typography key={`${estimated}${i}`} className={`delay delay-${delayClass}`}>
-                            {getTime(estimated)}
-                        </Typography>
-                    );
-                })
             )}
+            {showScheduledTimes && departureTime[0] !== departureTime[1] && departureTime[2] && (
+                <Typography sx={{ textDecoration: "line-through" }}>{departureTime[0]}</Typography>
+            )}
+            <Typography className={`delay delay-${departureTime[2] ?? "unset"}`}>
+                {departureTime[2] ? departureTime[1] : departureTime[0]}
+            </Typography>
         </Box>
     );
 };

@@ -77,11 +77,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                     gap: 1,
                 }}
             >
-                <TripStopTimes
-                    isTrain={trip[ETrip.route][ERoute.type] === 2}
-                    update={update}
-                    hasDeparted={hasDeparted}
-                />
+                <TripStopTimes update={update} hasDeparted={hasDeparted} />
                 <VehicleStopIcon
                     color={color}
                     index={index}
@@ -93,7 +89,7 @@ export default ({ vehicle, trip, stop, index, color, update, sequence }: Props) 
                               ? vehicle?.[EVehicle.percentTraveled]
                               : undefined
                     }
-                    lineMargin={41}
+                    lineMargin={JSON.parse(localStorage.getItem("showSeconds") || "false") ? 57.5 : 41}
                 />
             </ListItemIcon>
 

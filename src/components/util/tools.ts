@@ -6,6 +6,7 @@ export const getTime = (time: number) => {
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
+        second: JSON.parse(localStorage.getItem("showSeconds") || "false") ? "2-digit" : undefined,
     });
 };
 
@@ -22,20 +23,17 @@ export const getDelay = (delay?: number) => {
 };
 
 export const msToTime = (ms: number, withSeconds?: boolean) => {
-    let formattedTime: string[] = [];
+    let formattedTime = "";
 
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
 
-    const remainingMinutes = minutes % 60;
     const remainingSeconds = seconds % 60;
 
-    if (hours > 0) formattedTime.push(`${hours} h`);
-    if (remainingMinutes > 0) formattedTime.push(`${remainingMinutes} min`);
-    if (withSeconds) formattedTime.push(`${remainingSeconds} s`);
+    if (minutes > 0) formattedTime += withSeconds ? `${minutes}m` : `${minutes} min`;
+    if (withSeconds) formattedTime += `${remainingSeconds} s`;
 
-    return formattedTime.join(" ");
+    return formattedTime;
 };
 
 // Public transport data is keyed by the agency's local calendar day, which is not

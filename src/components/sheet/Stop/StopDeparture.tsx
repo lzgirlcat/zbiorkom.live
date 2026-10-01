@@ -29,7 +29,8 @@ export default ({ departure }: { departure: StopDeparture }) => {
 
     const estimated = scheduled + delay;
     const hasDelay = Math.abs(delay) >= 59000;
-    const minutesToDeparture = useTime(estimated);
+    const useSeconds = estimated - Date.now() < 60000;
+    const timeToDeparture = useTime(estimated, useSeconds);
 
     const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
@@ -66,7 +67,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
                             brigade={brigade}
                         />
 
-                        {showCountdown && <span>{minutesToDeparture > 0 ? minutesToDeparture : "<1"}</span>}
+                        {showCountdown && <span>{timeToDeparture > 0 ? timeToDeparture : "<1"}</span>}
                     </>
                 }
                 secondary={
@@ -97,7 +98,7 @@ export default ({ departure }: { departure: StopDeparture }) => {
                             )}
                         </Box>
 
-                        {showCountdown && <span>min</span>}
+                        {showCountdown && <span>{useSeconds ? "sec" : "min"}</span>}
                     </>
                 }
                 primaryTypographyProps={{
