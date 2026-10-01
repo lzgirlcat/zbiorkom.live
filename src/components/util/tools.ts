@@ -1,4 +1,4 @@
-import cities, { DEFAULT_TIMEZONE } from "cities";
+import cities, { DEFAULT_LOCATION, DEFAULT_TIMEZONE } from "cities";
 
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
@@ -152,6 +152,35 @@ export const getCityFromUrl = (routeCity?: string): string => {
 export const buildCitySuffix = (entityCity: string | undefined, routeCity: string | undefined): string => {
     if (!entityCity || entityCity === routeCity) return "";
     return `?city=${encodeURIComponent(entityCity)}`;
+};
+
+export const getInitialViewState = (cityId: string) => {
+    const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
+    const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
+    const lastFocusedLocation = JSON.parse(localStorage.getItem(`lastFocusedLocation.${cityId}`) || "null");
+
+    if (moveToLastLocation && lastUserLocation?.lastUpdate > Date.now() - 1000 * 60 * 60 * 24) {
+        return {
+            longitude: lastUserLocation.location[0],
+            latitude: lastUserLocation.location[1],
+            zoom: lastFocusedLocation?.[2] ?? 16,
+        };
+    } else if (localStorage.getItem("rememberLastFocusedLocation") === "true" && lastFocusedLocation) {
+        return {
+            longitude: lastFocusedLocation[0],
+            latitude: lastFocusedLocation[1],
+            zoom: lastFocusedLocation[2],
+        };
+    } else {
+        const location = cities[cityId]?.location || cities["warsaw"]?.location || DEFAULT_LOCATION;
+        const zoom = cities[cityId]?.zoom || 13.5;
+
+        return {
+            longitude: location[0],
+            latitude: location[1],
+            zoom,
+        };
+    }
 };
 
 export const share = (url: string) => {

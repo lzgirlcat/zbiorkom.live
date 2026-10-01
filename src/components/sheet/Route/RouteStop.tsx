@@ -42,7 +42,7 @@ export default ({ row, route, beads, onExpand }: Props) => {
                     onClick={() =>
                         map?.flyTo({
                             center: row.stop[EStop.location],
-                            zoom: map.getZoom() > 15 ? map.getZoom() : 15,
+                            zoom: map.getZoom() > 14 ? map.getZoom() : 14,
                         })
                     }
                     sx={{

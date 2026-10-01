@@ -2,11 +2,12 @@ import { mapStyles } from "./mapStyle";
 import { memo, ReactElement, useEffect, useMemo } from "react";
 import { Map } from "@vis.gl/react-maplibre";
 import { useLocation } from "react-router-dom";
-import cities, { DEFAULT_LOCATION } from "cities";
 import { useMapStyleStore } from "@/hooks/useMapStyleStore";
 import { useShallow } from "zustand/react/shallow";
+import cities from "cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
+import { getInitialViewState } from "@/util/tools";
 
 export default memo(({ children }: { children: ReactElement[] }) => {
     const { pathname } = useLocation();
@@ -36,33 +37,24 @@ export default memo(({ children }: { children: ReactElement[] }) => {
             };
         }
 
-        const lastUserLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
-        const moveToLastLocation = localStorage.getItem("moveToLastLocation") === "true";
-
-        if (moveToLastLocation && lastUserLocation?.lastUpdate > Date.now() - 1000 * 60 * 60 * 8) {
-            return {
-                longitude: lastUserLocation.location[0],
-                latitude: lastUserLocation.location[1],
-                zoom: 16,
-            };
-        } else {
-            const cityId = pathname.split("/")[1];
-            const location = cities[cityId]?.location || cities["warsaw"]?.location || DEFAULT_LOCATION;
-            const zoom = cities[cityId]?.zoom || 16;
-
-            return {
-                longitude: location[0],
-                latitude: location[1],
-                zoom,
-            };
-        }
+        return getInitialViewState(pathname.split("/")[1]);
     }, []);
 
     return (
         <Map
             mapStyle={(mapStyles[selectedStyle] || mapStyles.basic).style}
             onMoveStart={() => document.getElementById("root")?.classList.add("moving")}
-            onMoveEnd={() => document.getElementById("root")?.classList.remove("moving")}
+            onMoveEnd={({ viewState }) => {
+                document.getElementById("root")?.classList.remove("moving");
+
+                const cityId = window.location.pathname.split("/")[1];
+                if (cities[cityId] && localStorage.getItem("rememberLastFocusedLocation") === "true") {
+                    localStorage.setItem(
+                        `lastFocusedLocation.${cityId}`,
+                        JSON.stringify([viewState.longitude, viewState.latitude, viewState.zoom]),
+                    );
+                }
+            }}
             onLoad={({ target }) => {
                 target.touchZoomRotate.disableRotation();
 

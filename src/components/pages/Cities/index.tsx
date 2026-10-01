@@ -9,6 +9,7 @@ import CitySelect from "./CitySelect";
 import useBackendStore from "@/hooks/useBackendStore";
 import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
+import { getInitialViewState } from "@/util/tools";
 
 const color = "#cdeda3";
 
@@ -101,10 +102,11 @@ export default () => {
                         setOpen(false);
                         localStorage.setItem("city", city.id);
 
+                        const viewState = getInitialViewState(city.id);
                         window.skipPadding = true;
                         map?.flyTo({
-                            center: city.location,
-                            zoom: city.zoom || 16,
+                            center: [viewState.longitude, viewState.latitude],
+                            zoom: viewState.zoom,
                             duration: 0,
                             padding: {
                                 top: 0,
