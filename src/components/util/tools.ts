@@ -1,5 +1,16 @@
 import cities, { DEFAULT_LOCATION, DEFAULT_TIMEZONE } from "cities";
-import { ESearchRelation, SearchGroupName, SearchItem, SearchRawResponse, SearchResponse } from "typings";
+import {
+    ESearchRelation,
+    EStop,
+    SearchGroupName,
+    SearchItem,
+    SearchRawResponse,
+    SearchResponse,
+    RouteGraphStop,
+    Stop,
+    VehicleType,
+} from "typings";
+import type { MouseEvent } from "react";
 
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
@@ -229,6 +240,14 @@ export const buildSearchView = (
         groupNames,
     };
 };
+
+export const getStopPath = (city: string | undefined, stop: Stop | RouteGraphStop, type: VehicleType) =>
+    `/${city}/${type === VehicleType.Train ? "station" : "stop"}/${encodeURIComponent(stop[EStop.id])}` +
+    buildCitySuffix(stop[EStop.city], city);
+
+// clicks that should keep the default link behavior (open in new tab etc.)
+export const isModifiedClick = (e: MouseEvent) =>
+    e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
 
 export const share = (url: string) => {
     if (navigator.share !== undefined) {

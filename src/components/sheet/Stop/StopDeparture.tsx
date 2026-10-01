@@ -6,7 +6,7 @@ import useTime from "@/hooks/useTime";
 import { getTime } from "@/util/tools";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { buildCitySuffix, getCityFromUrl } from "@/util/tools";
+import { buildCitySuffix, getCityFromUrl, isModifiedClick } from "@/util/tools";
 
 export default ({ departure }: { departure: StopDeparture }) => {
     const { t } = useTranslation("Vehicle");
@@ -35,18 +35,18 @@ export default ({ departure }: { departure: StopDeparture }) => {
     const isCancelled = status === EStopDepartureStatus.Cancelled;
     const showCountdown = !isCancelled && estimated > Date.now();
 
-    const onClick = () =>
-        navigate(
-            `/${city}/trip/${encodeURIComponent(trip[ETrip.id])}` +
-                buildCitySuffix(getCityFromUrl(city), city),
-            {
-                state: -2,
-            },
-        );
+    const tripPath =
+        `/${city}/trip/${encodeURIComponent(trip[ETrip.id])}` + buildCitySuffix(getCityFromUrl(city), city);
 
     return (
         <ListItemButton
-            onClick={onClick}
+            href={tripPath}
+            onClick={(e) => {
+                if (isModifiedClick(e)) return;
+                e.preventDefault();
+
+                navigate(tripPath, { state: -2 });
+            }}
             sx={{
                 display: "flex",
                 flexDirection: "column",

@@ -6,6 +6,8 @@ import { ERoute, EStop, Route } from "typings";
 import type { RouteRow } from "@/util/routeLayout";
 import RouteTimeline from "./RouteTimeline";
 import RouteBead, { Bead } from "./RouteBead";
+import { useNavigate, useParams } from "react-router-dom";
+import { getStopPath, isModifiedClick } from "@/util/tools";
 
 export const ROW_HEIGHT = 56;
 
@@ -18,6 +20,8 @@ type Props = {
 
 export default ({ row, route, beads, onExpand }: Props) => {
     const { current: map } = useMap();
+    const navigate = useNavigate();
+    const { city } = useParams();
     const { t } = useTranslation("Vehicle");
 
     return (
@@ -39,12 +43,17 @@ export default ({ row, route, beads, onExpand }: Props) => {
 
             {row.kind === "stop" && (
                 <ButtonBase
-                    onClick={() =>
+                    href={getStopPath(city, row.stop, route[ERoute.type])}
+                    onClick={(e) => {
+                        if (isModifiedClick(e)) return;
+                        e.preventDefault();
+
                         map?.flyTo({
                             center: row.stop[EStop.location],
                             zoom: map.getZoom() > 14 ? map.getZoom() : 14,
-                        })
-                    }
+                        });
+                    }}
+                    onDoubleClick={() => navigate(getStopPath(city, row.stop, route[ERoute.type]))}
                     sx={{
                         flex: 1,
                         minWidth: 0,

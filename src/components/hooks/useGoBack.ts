@@ -9,8 +9,8 @@ export default () => {
 
     const currentHistory = window.history.length - window.historyLength;
 
-    return ({ ignoreState = false }: { ignoreState?: boolean } = {}) => {
-        if (!key || key === "default" || (Math.abs(state) > currentHistory && !ignoreState)) {
+    return ({ ignoreState = false, home = false }: { ignoreState?: boolean; home?: boolean } = {}) => {
+        if (home || !key || key === "default" || (Math.abs(state) > currentHistory && !ignoreState)) {
             navigate(`/${city}/`);
 
             if (map && map.getZoom() < 14) map.flyTo({ zoom: 14 });

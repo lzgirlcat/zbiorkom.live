@@ -20,7 +20,8 @@ import VehicleStopIcon from "@/sheet/Trip/TripStopIcon";
 import VehicleDelay from "@/sheet/Trip/TripDelay";
 import { useTranslation } from "react-i18next";
 import TripStopTimes from "./TripStopTimes";
-import { AlightType } from "@/util/tools";
+import { AlightType, getStopPath, isModifiedClick } from "@/util/tools";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
     vehicle?: Vehicle;
@@ -35,6 +36,8 @@ type Props = {
 
 export default ({ vehicle, trip, stop, index, color, update, sequence, isLast }: Props) => {
     const { current: map } = useMap();
+    const navigate = useNavigate();
+    const { city } = useParams();
     const { t } = useTranslation("Vehicle");
 
     const departure = update?.[EStopUpdate.departure];
@@ -58,15 +61,21 @@ export default ({ vehicle, trip, stop, index, color, update, sequence, isLast }:
     const isForbidden = (alight & AlightType.Forbidden) !== 0;
     const isOnDemand = (alight & AlightType.OnDemand) !== 0;
     const stopCode = stopData[EStop.code];
+    const stopPath = getStopPath(city, stopData, trip[ETrip.route][ERoute.type]);
 
     return (
         <ListItemButton
-            onClick={() =>
+            href={stopPath}
+            onClick={(e) => {
+                if (isModifiedClick(e)) return;
+                e.preventDefault();
+
                 map?.flyTo({
                     center: stopData[EStop.location],
                     zoom: map.getZoom() > 14 ? map.getZoom() : 14,
-                })
-            }
+                });
+            }}
+            onDoubleClick={() => navigate(stopPath)}
             sx={{
                 paddingY: 0.5,
             }}

@@ -6,11 +6,13 @@ import useDirectionStore from "@/hooks/useDirectionStore";
 import { useShallow } from "zustand/react/shallow";
 import { useQueryRouteGraph } from "@/hooks/useQueryRoutes";
 import { getCityFromUrl } from "@/util/tools";
+import useGoBack from "@/hooks/useGoBack";
 
 export default () => {
     const [direction, setDirection] = useDirectionStore(
         useShallow((state) => [state.direction, state.setDirection]),
     );
+    const goBack = useGoBack();
 
     const { city, route } = useParams();
     const { data } = useQueryRouteGraph({
@@ -64,7 +66,7 @@ export default () => {
                     {data.graph.length < 2 ? <AllInclusive /> : <ImportExport />}
                 </IconButton>
 
-                <IconButton size="small" onClick={() => window.history.back()}>
+                <IconButton size="small" onClick={() => goBack({ home: true })}>
                     <Close />
                 </IconButton>
             </Box>
