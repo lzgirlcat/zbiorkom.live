@@ -5,6 +5,7 @@ import { Stop, StopDepartures, StopDirection } from "typings";
 import { useEffect, useMemo, useRef } from "react";
 import { useEventQuery } from "./useEventQuery";
 import { useShallow } from "zustand/react/shallow";
+import { useSearchParams } from "react-router-dom";
 
 type StopDeparturesQueryProps = {
     stop: string;
@@ -24,10 +25,11 @@ export const useQueryStopDepartures = (props: StopDeparturesQueryProps) => {
     const reset = useStopStore((state) => state.reset);
 
     const queryClient = useQueryClient();
+    const [searchParams] = useSearchParams();
 
     const originalLimit = props.limit || storeLimit;
     const fetchLimit = originalLimit + 1;
-    const time = props.time || storeTime;
+    const time = props.time || storeTime || Number(searchParams.get("t")) || undefined;
     const destinations = props.destinations?.join(",") || storeDest;
 
     const queryKey = useMemo(() => ["stop", props.stop, destinations], [props.stop, destinations]);

@@ -8,11 +8,16 @@ import { useQueryStopDepartures } from "@/hooks/useQueryStops";
 import { getCityFromUrl } from "@/util/tools";
 import useFavStore from "@/hooks/useFavStore";
 import { useShallow } from "zustand/react/shallow";
+import { useState } from "react";
+import TimePicker from "@/ui/TimePicker";
+import useStopStore from "@/hooks/useStopStore";
 
 export default () => {
     const { city, stop } = useParams();
     const navigate = useNavigate();
     const goBack = useGoBack();
+    const [timePickerOpen, setTimePickerOpen] = useState(false);
+    const [storeTime, setTime] = useStopStore(useShallow((state) => [state.time, state.setTime]));
 
     const { data } = useQueryStopDepartures({
         city: getCityFromUrl(city),
@@ -84,10 +89,7 @@ export default () => {
                     {isFavorite ? <Star sx={{ color: "#FFD700" }} /> : <StarOutline />}
                 </IconButton>
 
-                <IconButton
-                    size="small"
-                    onClick={() => navigate(window.location.pathname + "/time" + window.location.search)}
-                >
+                <IconButton size="small" onClick={() => setTimePickerOpen(true)}>
                     <AccessTime />
                 </IconButton>
 
@@ -95,6 +97,22 @@ export default () => {
                     <Close />
                 </IconButton>
             </Box>
+
+            {timePickerOpen && (
+                <TimePicker
+                    open
+                    value={storeTime || Number(new URLSearchParams(window.location.search).get("t")) || Date.now()}
+                    close={() => setTimePickerOpen(false)}
+                    onChange={(time) => {
+                        setTime(time);
+                        setTimePickerOpen(false);
+
+                        const search = new URLSearchParams(window.location.search);
+                        search.set("t", time.toString());
+                        navigate({ search: search.toString() });
+                    }}
+                />
+            )}
         </Box>
     );
 };

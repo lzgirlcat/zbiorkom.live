@@ -221,7 +221,6 @@
         "enterTime": "Wprowadź czas",
         "hour": "Godzina",
         "minute": "Minuty",
-        "nextDay": "Zobaczysz rozkład na następny dzień od {{time}}",
         "cancel": "Anuluj",
         "save": "OK"
     },

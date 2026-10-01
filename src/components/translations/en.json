@@ -217,7 +217,6 @@
         "enterTime": "Enter time",
         "hour": "Hour",
         "minute": "Minute",
-        "nextDay": "You will see the schedule for the next day from {{time}}",
         "cancel": "Cancel",
         "save": "OK"
     },
