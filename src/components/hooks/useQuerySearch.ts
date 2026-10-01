@@ -1,7 +1,8 @@
 import { getFromAPI } from "@/util/fetchFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import { ERoute, Route, SearchErrorResponse, SearchResponse } from "typings";
+import { ERoute, Route, SearchErrorResponse, SearchRawResponse, SearchResponse } from "typings";
+import { buildSearchView, getSearchGroupOrdering } from "@/util/tools";
 import useFilterStore from "./useFilterStore";
 import { useQueryModels, useQueryRoutes } from "./useQueryRoutes";
 
@@ -18,16 +19,17 @@ export const useQuerySearch = ({ city, search }: { city: string; search?: string
             await new Promise((resolve) => setTimeout(resolve, 300));
             if (signal.aborted) return;
 
-            const data = await getFromAPI<SearchResponse | SearchErrorResponse>(
+            const data = await getFromAPI<SearchResponse | SearchRawResponse | SearchErrorResponse>(
                 city,
                 "search",
-                { query: search },
+                { query: search, raw: true },
                 signal,
             );
 
             if (isErrorResponse(data)) throw new Error(data.error);
+            if ("groupNames" in data) return data;
 
-            return data;
+            return buildSearchView(getSearchGroupOrdering(), data, search);
         },
         enabled: !!search,
     });

@@ -1,4 +1,5 @@
 import cities, { DEFAULT_LOCATION, DEFAULT_TIMEZONE } from "cities";
+import { ESearchRelation, SearchGroupName, SearchItem, SearchRawResponse, SearchResponse } from "typings";
 
 export const getTime = (time: number) => {
     return new Date(time).toLocaleTimeString("pl", {
@@ -181,6 +182,54 @@ export const getInitialViewState = (cityId: string) => {
             zoom,
         };
     }
+};
+
+const defaultSearchGroupOrdering: SearchGroupName[] = ["vehicles", "stops", "stations", "routes", "relations"];
+
+export const getSearchGroupOrdering = (): SearchGroupName[] =>
+    JSON.parse(localStorage.getItem("searchGroupOrdering") || JSON.stringify(defaultSearchGroupOrdering));
+
+const searchItemKeys: Record<SearchGroupName, keyof SearchItem> = {
+    vehicles: "vehicle",
+    stops: "stop",
+    stations: "station",
+    routes: "route",
+    relations: "relation",
+};
+
+export const buildSearchView = (
+    order: SearchGroupName[],
+    raw: SearchRawResponse,
+    search?: string,
+): SearchResponse => {
+    const groups: Record<SearchGroupName, any[]> = {
+        vehicles: raw.positions ?? [],
+        stops: raw.stops ?? [],
+        stations: raw.stations ?? [],
+        routes: raw.routes ?? [],
+        relations: [...(raw.relations ?? [])],
+    };
+
+    const exactRelation = groups.relations.findIndex(
+        (relation) =>
+            relation[ESearchRelation.shortName] === search ||
+            relation[ESearchRelation.shortName].split(" ")[0] === search,
+    );
+    if (exactRelation > 0) groups.relations.unshift(groups.relations.splice(exactRelation, 1)[0]);
+
+    const groupNames = order.filter((type) => groups[type]?.length);
+
+    return {
+        results: groupNames.flatMap((type) =>
+            groups[type].map((result, index) => ({
+                [searchItemKeys[type]]: result,
+                borderTop: index === 0 || undefined,
+                borderBottom: index === groups[type].length - 1 || undefined,
+            })),
+        ),
+        groups: groupNames.map((type) => groups[type].length),
+        groupNames,
+    };
 };
 
 export const share = (url: string) => {

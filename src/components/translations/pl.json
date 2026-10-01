@@ -150,7 +150,12 @@
         "searchCities": "Wyszukaj miasto",
         "containsAgencies": "Zawiera",
         "useStopCodeAsIcon": "Użyj numeru przystanku jako ikony",
-        "disableLiquidGlass": "Wyłącz efekt rozmytego szkła"
+        "disableLiquidGlass": "Wyłącz efekt rozmytego szkła",
+        "settingsBackup": "Kopia Zapasowa Ustawień",
+        "exportSettingsBackup": "Zapisz",
+        "importSettingsBackup": "Importuj",
+        "clearSettings": "Zresetuj",
+        "searchGroupOrdering": "Kolejnosć wyników wyszukiwania"
     },
     "Languages": {
         "en": "Angielski",

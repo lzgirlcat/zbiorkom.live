@@ -146,7 +146,12 @@
         "searchCities": "Search cities",
         "containsAgencies": "Contains",
         "useStopCodeAsIcon": "Use stop code as icon",
-        "disableLiquidGlass": "Disable liquid glass effect"
+        "disableLiquidGlass": "Disable liquid glass effect",
+        "settingsBackup": "Settings backup",
+        "exportSettingsBackup": "Export",
+        "importSettingsBackup": "Import",
+        "clearSettings": "Restore Defaults",
+        "searchGroupOrdering": "Search order"
     },
     "Languages": {
         "en": "English",

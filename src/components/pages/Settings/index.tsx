@@ -9,6 +9,8 @@ import CitySettings from "./CitySettings";
 import ThemeSettings from "./ThemeSettings";
 import Helm from "@/util/Helm";
 import BehaviorSettings from "./BehaviorSettings";
+import SearchGroupsOrdering from "./SearchGroupsOrdering";
+import SettingsBackup from "./SettingsBackup";
 
 export default memo(() => {
     const { t } = useTranslation("Settings");
@@ -42,6 +44,8 @@ export default memo(() => {
                     <MarkerSettings />
                     <BehaviorSettings />
                     <LanguageSettings />
+                    <SearchGroupsOrdering />
+                    <SettingsBackup />
 
                     <Box
                         sx={{
