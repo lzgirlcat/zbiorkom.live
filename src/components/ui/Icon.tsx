@@ -50,11 +50,11 @@ export const DiscordIcon = ({ htmlColor }: { htmlColor?: string }) => (
 );
 
 export const defaultColors: Record<number, string> = {
-    [VehicleType.Tram]: "#be0d05",
-    [VehicleType.Subway]: "#ba0059",
-    [VehicleType.Train]: "#415f91",
-    [VehicleType.Bus]: "#2b6c00",
-    [VehicleType.Ferry]: "#0061a4",
+    [VehicleType.Tram]: "#eb2127",
+    [VehicleType.Subway]: "#d1009d",
+    [VehicleType.Train]: "#0082ca",
+    [VehicleType.Bus]: "#4c9c2e",
+    [VehicleType.Ferry]: "#009fe3",
     [VehicleType.AerialLift]: "#88511e",
     [VehicleType.Funicular]: "#705289",
     [VehicleType.Trolleybus]: "#006c46",
