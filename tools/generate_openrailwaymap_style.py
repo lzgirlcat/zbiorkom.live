@@ -5,7 +5,7 @@ from sys import stderr
 
 import requests
 
-STYLE_URL = "https://openrailwaymap.app/style/standard.json"
+STYLE_URL = "https://openrailwaymap.app/style.json"
 
 
 def download_style():

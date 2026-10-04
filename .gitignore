@@ -3,3 +3,4 @@
 pnpm-lock.yaml
 deploy.sh
 .vscode
+public/openrailwaymap.app.style.json
