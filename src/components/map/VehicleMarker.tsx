@@ -21,7 +21,6 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
     const { vehicleNumber } = parseVehicleId(vehicle[EVehicle.id]);
     const showFleetId = showFleet && !vehicleNumber.startsWith("_");
     const emote = vehicleEmotes[vehicle[EVehicle.route][ERoute.city] + vehicleNumber];
-
     return (
         <Marker
             longitude={vehicle[EVehicle.location][0]}
@@ -32,7 +31,7 @@ export default ({ vehicle, showBrigade, showFleet, onClick }: Props) => {
             <div
                 className={`vehicle marker`}
                 style={{
-                    background: vehicle[EVehicle.route][ERoute.color],
+                    background: vehicle[EVehicle.route][ERoute.color].at(0)=="#" ? vehicle[EVehicle.route][ERoute.color] : `#${vehicle[EVehicle.route][ERoute.color]}`,
                     position: "relative",
                     overflow: "visible",
                 }}

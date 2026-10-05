@@ -11,7 +11,7 @@ export default ({ route, style, onClick }: Props) => {
     return (
         <div
             className="routeChip"
-            style={{ backgroundColor: route[ERoute.color], ...style }}
+            style={{ backgroundColor: route[ERoute.color].at(0)=="#" ? route[ERoute.color] : `#${route[ERoute.color]}`, ...style }}
             onClick={onClick}
         >
             <svg viewBox="0 0 24 24" width="1.1em" fill="currentColor">

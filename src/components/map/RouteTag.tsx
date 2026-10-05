@@ -11,7 +11,7 @@ type Props = {
 
 export default ({ route, shortName, brigade, fontSize }: Props) => {
     return (
-        <div className="vehicle" style={{ backgroundColor: route[ERoute.color], zIndex: 5, fontSize }}>
+        <div className="vehicle" style={{ backgroundColor:  route[ERoute.color].at(0)=="#" ? route[ERoute.color] : `#${route[ERoute.color]}`, zIndex: 5, fontSize }}>
             <SvgIcon
                 sx={{
                     fontSize: "1.2em",
